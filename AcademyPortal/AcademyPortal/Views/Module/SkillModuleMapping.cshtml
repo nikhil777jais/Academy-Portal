@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Skill-Module-Mapping";
+    var skills = ViewData["skills"] as IEnumerable<Skill>;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @if (skills.Any())
+            {
+                <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                    Skills Present in Databse
+                </div>
+                <table class="table table-info border-info table-striped table-hover align-middle table-bordered">
+                    <thead class="table-dark">
+                        <tr class="text-center">
+                            <th width=10% scope="col">Id</th>
+                            <th width=15% scope="col">Name</th>
+                            <th width=15% scope="col">Family</th>
+                            <th width=15% scope="col">Created By</th>
+                            <th width=20% scope="col">Modules</th>
+                            <th width=25% scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in skills)
+                        {
+                            <tr class="text-center">
+                                <td class="py-2" width=10%>@Html.DisplayFor(modelItem => item.Id)</td>
+                                <td class="py-2" width=15%>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td class="py-2" width=15%>@Html.DisplayFor(modelItem => item.Family)</td>
+                                <td class="py-2" width=15%>@Html.DisplayFor(modelItem => item.CreatedBy.Email)</td>
+                                <td class="py-2" width=20%>
+                                    @{
+                                        var modules = item.RelatedModules;
+                                        if (modules.Any())
+                                        {
+                                            foreach(var module in modules)
+                                            {
+                                                <a>@module.Name,</a>
+                                            }
+                                        }
+                                    }
+                                </td>
+                                <td class="py-2" width=25%>
+                                    <a class="btn btn-warning" asp-route="addmodules" asp-route-id=@item.Id>Map Modules</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                    Currently there is no data available.
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

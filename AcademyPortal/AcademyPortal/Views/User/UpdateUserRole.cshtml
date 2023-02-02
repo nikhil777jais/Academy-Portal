@@ -1,0 +1,61 @@
+﻿@using AcademyPortal.Model
+@using AcademyPortal.ViewModel
+@model UpdateRoleViewModel;
+
+@{
+    ViewData["Title"] = "UpdateUser";
+    var user = ViewData["user"] as ApplicationUser;
+}
+
+<div class="container-fluid ">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="alert alert-success text-center bg-info text-black mt-3 py-2" role="alert">
+                Select Role and Update
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <form method="post" action = "~/user/updatestatus/@user.Id" novalidate>
+                        <div class="form-group pb-1">
+                            <label asp-for="Status"></label>
+                            <select asp-for="Status" class="form-control" asp-items="new SelectList(ViewBag.lststatus)">
+                            </select>
+                            <small><span asp-validation-for="Status" class="text-danger"></span></small>
+                            <input type="hidden" asp-for="Role" value="kjbd"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Update Status" class="btn btn-success mt-2" />
+                            <a class="btn btn-primary mt-2" asp-route="list">Go Back</a>
+                        </div>
+                    </form>
+                </div>
+                <hr class="mt-5"/>
+                <div class="col-md-10">
+                    <form method="post" novalidate>
+                        <div class="form-group pb-1">
+                            <label asp-for="Role"></label>
+                            <select asp-for="Role" class="form-control" asp-items="new SelectList(ViewBag.lstroles)">
+                                <option value="">Please Select any Role</option>
+                            </select>
+                            <small><span asp-validation-for="Role" class="text-danger"></span></small>
+                            <input type="hidden" asp-for="Status" value="@user.status.Name"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit"  value="Update Role" class="btn btn-success mt-2" />
+                            <a class="btn btn-primary mt-2" asp-route="list">Go Back</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-@TempData["Type"] bg-@TempData["Type"] mt-5  text-black alert-dismissible fade py-3 show mt-2 mb-0 bg" role="alert">
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+        <partial name="_userprofile" model="@user" />
+    </div>
+</div>
+

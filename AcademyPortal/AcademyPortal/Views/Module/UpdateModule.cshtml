@@ -1,0 +1,59 @@
+﻿@model AcademyPortal.ViewModel.ModuleViewModel;
+@{
+    ViewData["Title"] = "Update-Module";
+    var moduleobj = ViewData["moduleobj"] as Module;
+}
+<div class="container-fluid">
+    <div class="row justify-content-center ">
+        <div class="col-md-4">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Update Module
+            </div>
+            <div class="mx-5">
+                <form method="post" novalidate>
+                    <div class="form-group pb-1">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <small><span asp-validation-for="Name" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group pb-1">
+                        <label asp-for="Technology"></label>
+                        <input asp-for="Technology" class="form-control" />
+                        <small><span asp-validation-for="Technology" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group pb-1">
+                        <label asp-for="Proficiency"></label>
+                        <input asp-for="Proficiency" class="form-control" />
+                        <small><span asp-validation-for="Proficiency" class="text-danger"></span></small>
+                    </div>
+
+                    <div class="form-group ">
+                        <input type="submit" value="Update" class="btn btn-success mt-2" />
+                        <a class="btn btn-danger mt-2" asp-route="addmodule">GoBack</a>
+                    </div>
+                </form>
+            </div>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-@TempData["Type"] alert-dismissible fade show py-3 mb-0 mt-3" role="alert">
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Module Details
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item active" aria-current="true">Details of module with Id(@moduleobj.Id)</li>
+                <li class="list-group-item"><b>Id: </b>@moduleobj.Id</li>
+                <li class="list-group-item"><b>Module Name: </b>@moduleobj.Name</li>
+                <li class="list-group-item"><b>Module Technology: </b>@moduleobj.Technology</li>
+                <li class="list-group-item"><b>Module Proficiency: </b>@moduleobj.Proficiency</li>
+                <li class="list-group-item"><b>Crated By: </b>@moduleobj.CreatedBy</li>
+            </ul>
+        </div>
+    </div>
+</div>
+</b>

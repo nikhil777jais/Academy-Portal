@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Assigened Batches";
+    var Batches = ViewData["Batches"] as ICollection<Batch>;
+}
+<div class="container-fluid">
+    <div class="row justify-content-center ">
+        @*<div class="col-md-4">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Batches Assigned To @User
+            </div>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-@TempData["Type"] alert-dismissible fade show py-3 mb-0 mt-3" role="alert">
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>*@
+        <partial name="_listBatch" model="@Batches" />
+    </div>
+</div>

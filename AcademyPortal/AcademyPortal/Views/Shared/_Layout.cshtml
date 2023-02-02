@@ -1,0 +1,88 @@
+﻿@using AcademyPortal.Model;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> _signInManager;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AcademyPortal</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AcademyPortal.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">Academy Portal</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    @if (_signInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="~/images/avtar.png" alt="" width="30" height="30" class="d-inline-block align-text-top">
+                            </a>
+                            <ul class="dropdown-menu bg-warning text-center" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item nav-link  text-dark" asp-route="profile">Profile</a></li>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li><a class="dropdown-item nav-link  text-dark" asp-route="AddAndListRole">Manage Role</a></li>
+                                    <li><a class="dropdown-item nav-link  text-dark" asp-route="list">Manage User</a></li>
+                                }
+                                else if (User.IsInRole("Faculty"))
+                                {
+                                    <li><a class="dropdown-item nav-link  text-dark" asp-route="mybatches">Batches</a></li>
+                                }
+                                <li><a class="dropdown-item nav-link  text-dark" asp-route="logout">Logout</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item mt-1">
+                            <a class="nav-link text-white" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item mt-1">
+                            <a class="nav-link text-white" asp-route="privacy">Privacy</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-route="signup">SignUp</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-route="signin">SignIn</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-warning " type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+    <div>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @*<footer class="border-top footer text-muted lh-1">
+        <div class="concontainer-fluid footer-bg-1 px-0 d-print-none">
+        <div class="container">
+        <div class="row justify-content-center text-white">
+        <div class="col-md-8 py-2 text-center">
+        <h4>Shri Ram Murti Smarak College of Engineering and Technology</h4>
+        <a class="text-white " href="https://github.com/nikhil777jais">Nikhil Jaiswal</a>
+        </div>
+        </div>
+        </div>
+        </div>
+        </footer>*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

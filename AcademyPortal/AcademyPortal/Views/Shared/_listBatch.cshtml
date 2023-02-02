@@ -1,0 +1,71 @@
+﻿@using AcademyPortal.Model;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> _signInManager;
+@model ICollection<Batch> ;
+@{
+    var col_size = 0;
+    if (User.IsInRole("Faculty"))
+    {
+        col_size = 11;
+    }
+    else
+    {
+        col_size = 8;
+    }
+}
+<div class="col-md-@col_size">
+    @if (@Model.Any())
+    {
+        <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+            @if (User.IsInRole("Faculty"))
+            {
+                <span>Batches Assigned To You </span>
+            }
+            else
+            {
+                <span>Batches Present in Databse</span>
+            }
+        </div>
+        <table class="table table-primary border-primary table-striped table-hover align-middle table-bordered">
+            <thead class="">
+                <tr class="text-center">
+                    <th width=10% scope="col">Id</th>
+                    <th width=15% scope="col">Technology</th>
+                    <th width=15% scope="col">Capacity</th>
+                    <th width=15% scope="col">Class Room</th>
+                    <th width=10% scope="col">Created By</th>
+                    <th width=35% scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in @Model)
+                {
+                    <tr class="text-center">
+                        <td class="py-2" width=10%>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td class="py-2" width=15%>@Html.DisplayFor(modelItem => item.Technology)</td>
+                        <td class="py-2" width=15%>@Html.DisplayFor(modelItem => item.Batch_Capacity)</td>
+                        <td class="py-2" width=15%>@Html.DisplayFor(modelItem => item.Classroom_Name)</td>
+                        <td class="py-2" width=10%>@Html.DisplayFor(modelItem => item.CreatedBy.Email)</td>
+                        <td class="py-2" width=35%>
+                            @if (User.IsInRole("Faculty"))
+                            {
+                                <a class="btn btn-warning" asp-route="updatebatchstatus" asp-route-id=@item.Id>Update Status</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-warning" asp-route="updatebatch" asp-route-id=@item.Id>Edit</a>
+                                <a class="btn btn-warning" asp-route="addfaculty" asp-route-id=@item.Id>Assigne To</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+            Currently there is no data available.
+        </div>
+    }
+</div>

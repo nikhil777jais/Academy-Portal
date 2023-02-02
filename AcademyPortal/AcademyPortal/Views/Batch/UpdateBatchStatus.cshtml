@@ -1,0 +1,37 @@
+﻿@using AcademyPortal.ViewModel;
+@model UpdateBatchStatusViewModel;
+@{
+    ViewData["Title"] = "Update Batch Status";
+    var batchobj = ViewData["batchobj"] as Batch;
+}
+<div class="container-fluid">
+    <div class="row justify-content-center ">
+        <div class="col-md-4">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Update Status
+            </div>
+            <div class="mx-5">
+                <form method="post" novalidate>
+                    <div class="form-group pb-1">
+                        <label asp-for="Status"></label>
+                        <select asp-for="Status" class="form-control" asp-items="ViewBag.lststatus">
+                        </select>
+                        <small><span asp-validation-for="Status" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group ">
+                        <input type="submit" value="Update Status" class="btn btn-success mt-2" />
+                        <a class="btn btn-color mt-2" asp-route="mybatches">GoBack</a>
+                    </div>
+                </form>
+            </div>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-@TempData["Type"] alert-dismissible fade show py-3 mb-0 mt-3" role="alert">
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+        <partial name="_batchDetails" model="@batchobj"/>
+    </div>
+</div>

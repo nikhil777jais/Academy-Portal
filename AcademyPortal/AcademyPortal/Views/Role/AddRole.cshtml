@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model AcademyPortal.ViewModel.RoleViewModel;
+@{
+    ViewData["Title"] = "AddRole";
+    var roles = ViewData["roles"] as IEnumerable<IdentityRole>;
+}
+<div class="container-fluid">
+    <div class="row justify-content-center ">
+        <div class="col-md-12 text-center">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-@TempData["Type"] alert-dismissible fade show py-3 mb-0 mt-2" role="alert">
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+        <div class="col-md-4">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Add new role to database
+            </div>
+            <div class="mx-5">
+                <form method="post" novalidate>
+                    <div class="form-group pb-1">
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <small><span asp-validation-for="Name" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group ">
+                        <input type="submit" value="Add Role" class="btn btn-info mt-2" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-8 ">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Roles Present in Databse
+            </div>
+            <table class="table table-warning table-striped table-hover align-middle table-bordered">
+                <thead class="table-dark">
+                    <tr class="text-center">
+                        <th width=40% scope="col">Id</th>
+                        <th width=30% scope="col">Name</th>
+                        <th width=30% scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in roles)
+                    {
+                        <tr class="text-center">
+                            <td class="py-2" width=40%>@Html.DisplayFor(modelItem => item.Id)</td>
+                            <td class="py-2" width=30%>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td class="py-2" width=30%>
+                                <a class="btn btn-danger" asp-route="DeleteRole" asp-route-id=@item.Id>Delete</a>
+                                @*<a class="btn btn-warning" asp-route="" asp-route-id=@item.Id>Edit</a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

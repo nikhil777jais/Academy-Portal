@@ -1,0 +1,37 @@
+﻿@using AcademyPortal.Model
+@model Batch;
+@{
+}
+<div class="col-md-8">
+    <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+        Batch Details 
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item active" aria-current="true">Details of batch with Id(@Model.Id)</li>
+        <li class="list-group-item"><b>Id: </b>@Model.Id</li>
+        <li class="list-group-item"><b>Skill: </b>@Model.RelaedSkill.Name</li>
+        <li class="list-group-item"><b>Module: </b>@Model.RelaedModule.Name</li>
+        <li class="list-group-item"><b>Technology: </b>@Model.Technology</li>
+        <li class="list-group-item"><b>Batch Start Date: </b>@Model.Batch_Start_Date</li>
+        <li class="list-group-item"><b>Batch End Date: </b>@Model.Batch_End_Date</li>
+        <li class="list-group-item"><b>Capacity: </b>@Model.Batch_Capacity</li>
+        <li class="list-group-item"><b>Classroom Name: </b>@Model.Classroom_Name</li>
+        <li class="list-group-item"><b>Created By: </b>@Model.CreatedBy</li>
+        <li class="list-group-item">
+            <b>Assigned Faculty: </b>
+            @if (@Model.Users.Any())
+            {
+                <ol>
+                    @foreach (var bu in @Model.Users)
+                    {
+                        <li>@bu.User.Email | @bu.status.Name</li>
+                    }
+                </ol>
+            }
+            else
+            {
+                <p>Not Assingned To Any Faculty</p>
+            }
+        </li>
+    </ul>
+</div>

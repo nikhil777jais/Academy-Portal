@@ -1,0 +1,46 @@
+﻿@using AcademyPortal.Model;
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<ApplicationUser>;
+@inject UserManager<ApplicationUser> _userManager;
+@{
+    ViewData["Title"] = "User List";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger text-center text-dark bg-info mt-3 py-2" role="alert">
+                Roles Present in Databse
+            </div>
+            <table class="table table-success table-striped table-hover align-middle border-success table-bordered">
+                <thead class="table-dark">
+                    <tr class="text-center">
+                        <th width=25% scope="col">Id</th>
+                        <th width=15% scope="col">Email</th>
+                        <th width=15% scope="col">Roles</th>
+                        <th width=10% scope="col">Current Status</th>
+                        <th width=15% scope="col">Date Of Birth</th>
+                        <th width=20% scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var roles = await @_userManager.GetRolesAsync(item);
+                        string role = @roles.Any() ? @roles[0] : "No role";
+                        <tr class="text-center">
+                            <td class="py-2" width=25%>@item.Id</td>
+                            <td class="py-2" width=15%>@item.Email</td>
+                            <td class="py-2" width=15%>@role</td>
+                            <td class="py-2" width=10%>@item.status.Name</td>
+                            <td class="py-2" width=15%>@item.DateOfBirth</td>
+                            <td class="py-2" width=20%>
+                                <a class="btn btn-primary" asp-route="updaterole" asp-route-id=@item.Id>Update Role</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

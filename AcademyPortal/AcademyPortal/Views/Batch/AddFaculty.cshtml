@@ -1,0 +1,69 @@
+﻿@model AcademyPortal.ViewModel.AddFacultyViewModel;
+@{
+    ViewData["Title"] = "Add-Faculty-To-Batch";
+    var batchobj = ViewData["batchobj"] as Batch;
+}
+<div class="container-fluid">
+    <div class="row justify-content-center ">
+        <div class="col-md-4">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Add Faculty To Batch
+            </div>
+            <div class="mx-5">
+                <form method="post" novalidate>
+                    <div class="form-group pb-1">
+                        <label asp-for="Faculties"></label>
+                        <select asp-for="Faculties" class="form-control" asp-items="ViewBag.lstfaculty">
+                        </select>
+                        <small><span asp-validation-for="Faculties" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group ">
+                        <input type="submit" value="Add" class="btn btn-success mt-2" />
+                        <a class="btn btn-color mt-2" asp-route="addbatch">GoBack</a>
+                    </div>
+                </form>
+            </div>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-@TempData["Type"] alert-dismissible fade show py-3 mb-0 mt-3" role="alert">
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Batch Details
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item active" aria-current="true">Details of batch with Id(@batchobj.Id)</li>
+                <li class="list-group-item"><b>Id: </b>@batchobj.Id</li>
+                <li class="list-group-item"><b>Skill: </b>@batchobj.RelaedSkill.Name</li>
+                <li class="list-group-item"><b>Module: </b>@batchobj.RelaedModule.Name</li>
+                <li class="list-group-item"><b>Technology: </b>@batchobj.Technology</li>
+                <li class="list-group-item"><b>Batch Start Date: </b>@batchobj.Batch_Start_Date</li>
+                <li class="list-group-item"><b>Batch End Date: </b>@batchobj.Batch_End_Date</li>
+                <li class="list-group-item"><b>Capacity: </b>@batchobj.Batch_Capacity</li>
+                <li class="list-group-item"><b>Classroom Name: </b>@batchobj.Classroom_Name</li>
+                <li class="list-group-item"><b>Created By: </b>@batchobj.CreatedBy</li>
+                <li class="list-group-item"><b>Assigned Faculty: </b>
+                    @if (@batchobj.Users.Any())
+                    {
+                        <ol>
+                            @foreach(var bu in @batchobj.Users)
+                            {
+                                <li>@bu.User.Email
+                                    <a class="btn btn-danger mx-3 py-0 my-1" href="/@batchobj.Id/removefaculty/@bu.UserId" >Remove</a>
+                                </li>
+                            }
+                            </ol>
+                    }
+                    else
+                    {
+                        <p>Not Assingned To Any Faculty</p>
+                    } 
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

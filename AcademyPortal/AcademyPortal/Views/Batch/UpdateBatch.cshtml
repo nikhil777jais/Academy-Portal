@@ -1,0 +1,71 @@
+﻿@model AcademyPortal.ViewModel.AddBatchViewModel;
+@{
+    ViewData["Title"] = "Update-Batch";
+    var batchobj = ViewData["batchobj"] as Batch;
+}
+<div class="container-fluid">
+    <div class="row justify-content-center ">
+        <div class="col-md-4">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Update Batch
+            </div>
+            <div class="mx-5">
+                <form method="post" novalidate>
+                    <div class="form-group pb-1">
+                        <label asp-for="RelaedSkill"></label>
+                        <select asp-for="RelaedSkill" class="form-control" asp-items="ViewBag.lstskill">
+                            <option value="">Please Select Skill</option>
+                        </select>
+                        <small><span asp-validation-for="RelaedSkill" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group pb-1">
+                        <label asp-for="RelaedModule"></label>
+                        <select asp-for="RelaedModule" class="form-control" asp-items="ViewBag.lstmodule">
+                            <option value="">Please Select Module</option>
+                        </select>
+                        <small><span asp-validation-for="RelaedModule" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group pb-1">
+                        <label asp-for="Technology"></label>
+                        <input asp-for="Technology" class="form-control" />
+                        <small><span asp-validation-for="Technology" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group pb-1">
+                        <label asp-for="Batch_Start_Date"></label>
+                        <input asp-for="Batch_Start_Date" class="form-control" />
+                        <small><span asp-validation-for="Batch_Start_Date" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group pb-1">
+                        <label asp-for="Batch_End_Date"></label>
+                        <input asp-for="Batch_End_Date" class="form-control" />
+                        <small><span asp-validation-for="Batch_End_Date" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group pb-1">
+                        <label asp-for="Batch_Capacity"></label>
+                        <input asp-for="Batch_Capacity" class="form-control" />
+                        <small><span asp-validation-for="Batch_Capacity" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group pb-1">
+                        <label asp-for="Classroom_Name"></label>
+                        <input asp-for="Classroom_Name" class="form-control" />
+                        <small><span asp-validation-for="Classroom_Name" class="text-danger"></span></small>
+                    </div>
+
+                    <div class="form-group ">
+                        <input type="submit" value="Update Batch" class="btn btn-success mt-2" />
+                        <a class="btn btn-color mt-2" asp-route="addbatch">GoBack</a>
+                    </div>
+                </form>
+            </div>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-@TempData["Type"] alert-dismissible fade show py-3 mb-0 mt-3" role="alert">
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+        <partial name="_batchDetails" model="@batchobj" />
+    </div>
+</div>
+</b>
