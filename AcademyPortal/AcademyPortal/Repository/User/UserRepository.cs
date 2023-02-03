@@ -59,17 +59,22 @@ namespace AcademyPortal.Repository.User
 
         public async Task<ApplicationUser> GetUserByIdAsync(string id)
         {
-            return await _db.Users.FindAsync(id);
+            return await _db.Users.Include(u => u.status).FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<ApplicationUser> GetUserByUsernameAsync(string username)
         {
-            return await _db.Users.SingleOrDefaultAsync(u => u.UserName == username);
+            return await _db.Users.Include(u => u.status).SingleOrDefaultAsync(u => u.UserName == username);
         }
 
         public async Task<ApplicationUser> GetUserByClaimsAsync(ClaimsPrincipal claims)
         {
             return await _userManager.GetUserAsync(claims);
+        }
+
+        public async Task<IEnumerable<ApplicationUser>> GetUsersAsync()
+        {
+            return await _db.Users.Include(u => u.status).ToListAsync();   
         }
     }
 }

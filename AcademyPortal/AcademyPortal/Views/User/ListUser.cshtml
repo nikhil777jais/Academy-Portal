@@ -31,10 +31,10 @@
                             <td class="py-2" width=25%>@item.Id</td>
                             <td class="py-2" width=15%>@item.Email</td>
                             <td class="py-2" width=15%>@role</td>
-                            <td class="py-2" width=10%>@item.status.Name</td>
+                            <td class="py-2" width=10%>@item.status?.Name</td>
                             <td class="py-2" width=15%>@item.DateOfBirth</td>
                             <td class="py-2" width=20%>
-                                <a class="btn btn-primary" asp-route="updaterole" asp-route-id=@item.Id>Update Role</a>
+                                <a class="btn btn-primary" asp-route="updateRole" asp-route-id=@item.Id>Update Role</a>
                             </td>
                         </tr>
                     }
