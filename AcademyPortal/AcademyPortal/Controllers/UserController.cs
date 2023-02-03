@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AcademyPortal.ViewModel;
-using AcademyPortal.Repository;
+using AcademyPortal.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using System.Dynamic;
 using Microsoft.AspNetCore.Identity;
@@ -10,14 +10,14 @@ namespace AcademyPortal.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _uow;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AcademyPortalDbContext _db;
 
-        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, AcademyPortalDbContext db)
+        public UserController(IUnitOfWork uow, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, AcademyPortalDbContext db)
         {
-            _userRepository = userRepository;
+            _uow = uow;
             _userManager = userManager;
             _roleManager = roleManager;
             _db = db;
@@ -44,10 +44,10 @@ namespace AcademyPortal.Controllers
             
             if (ModelState.IsValid)
             {
-                var result = await _userRepository.CreateUserAsync(signUpUserViewModel);
+                var result = await _uow.UserRepository.CreateUserAsync(signUpUserViewModel);
                 if (result.Succeeded)
                 {
-                    return RedirectToRoute("signin");
+                    return RedirectToRoute("signIn");
                 }
                 else
                 {
@@ -60,18 +60,18 @@ namespace AcademyPortal.Controllers
             return View("SignUp");
         }
 
-        [Route("user/signin", Name = "signin")]
+        [Route("user/signIn", Name = "signIn")]
         public async Task<IActionResult> SignIn()
         {
             if (User.Identity.IsAuthenticated)
             {
-                TempData["Message"] = $"Welcome To Academy Poertal";
+                TempData["Message"] = $"Welcome To Academy Portal";
                 return RedirectToAction("Index", "Home");
             }
             return View("SignIn");
         }
 
-        [Route("user/signin", Name = "signin")]
+        [Route("user/signIn", Name = "signIn")]
         [HttpPost]
         public async Task<IActionResult> SignIn(SignInViewModel signInViewModel)
         {
@@ -83,10 +83,10 @@ namespace AcademyPortal.Controllers
             }            
             if (ModelState.IsValid)
             {
-                var result = await _userRepository.SignInUserAsync(signInViewModel);
+                var result = await _uow.UserRepository.SignInUserAsync(signInViewModel);
                 if (result.Succeeded)
                 {
-                    TempData["Message"] = $"Welcome To Academy Poertal";
+                    TempData["Message"] = $"Welcome To Academy Portal";
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -101,8 +101,8 @@ namespace AcademyPortal.Controllers
         [Route("user/logout", Name = "logout")]
         public async Task<IActionResult> Logout()
         {
-            await _userRepository.LogoutUser();
-            return RedirectToAction("signin");
+            await _uow.UserRepository.LogoutUser();
+            return RedirectToAction("signIn");
         }
 
         [Authorize]
@@ -133,7 +133,7 @@ namespace AcademyPortal.Controllers
             var user = _userManager.Users.Include(x => x.status).FirstOrDefault(x => x.Id == userId);
             if (ModelState.IsValid)
             {
-                var result = await _userRepository.UpdateProfileAsync(profileViewModel, user);
+                var result = await _uow.UserRepository.UpdateProfileAsync(profileViewModel, user);
                 if (result.Succeeded)
                 {
                     ViewData["user"] = user;

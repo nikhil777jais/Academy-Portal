@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
+using AcademyPortal.Extensions;
 namespace AcademyPortal.Controllers
 {
 
@@ -25,6 +25,7 @@ namespace AcademyPortal.Controllers
         [Route("batch", Name = "addbatch")]
         public async Task<IActionResult> AddBatch()
         {
+           
             var lstmodule = new List<SelectListItem>();
             foreach (var item in await _db.Modules.ToListAsync())
             {

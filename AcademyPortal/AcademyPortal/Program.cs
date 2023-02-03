@@ -12,6 +12,10 @@ builder.Services.AddControllersWithViews();
 // Application Services
 builder.Services.AddApplicationService(builder.Configuration);
 builder.Services.IdentityConfig(builder.Configuration);
+builder.Services.ConfigureApplicationCookie(options =>{
+    options.LoginPath = "/user/signIn";
+    options.AccessDeniedPath = new PathString("/User/AccessDenied");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

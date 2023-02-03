@@ -1,8 +1,10 @@
-﻿using AcademyPortal.Model;
+﻿using System.Security.Claims;
+using AcademyPortal.Model;
 using AcademyPortal.ViewModel;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
-namespace AcademyPortal.Repository
+namespace AcademyPortal.Repository.User
 {
     public class UserRepository: IUserRepository
     {
@@ -53,6 +55,21 @@ namespace AcademyPortal.Repository
             var result = await _userManager.UpdateAsync(applicationUser);
 
             return result;
-        } 
+        }
+
+        public async Task<ApplicationUser> GetUserByIdAsync(string id)
+        {
+            return await _db.Users.FindAsync(id);
+        }
+
+        public async Task<ApplicationUser> GetUserByUsernameAsync(string username)
+        {
+            return await _db.Users.SingleOrDefaultAsync(u => u.UserName == username);
+        }
+
+        public async Task<ApplicationUser> GetUserByClaimsAsync(ClaimsPrincipal claims)
+        {
+            return await _userManager.GetUserAsync(claims);
+        }
     }
 }
