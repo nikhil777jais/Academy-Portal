@@ -2,7 +2,7 @@
 using AcademyPortal.ViewModel;
 using AcademyPortal.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
-using System.Dynamic;
+using AcademyPortal.Extensions;
 using Microsoft.AspNetCore.Identity;
 using AcademyPortal.Model;
 using Microsoft.EntityFrameworkCore;
@@ -109,8 +109,7 @@ namespace AcademyPortal.Controllers
         [Route("user/profile", Name = "profile")]
         public async Task<IActionResult> Profile()
         {
-            var userId = _userManager.GetUserId(HttpContext.User);
-            var user = _userManager.Users.Include(x => x.status).FirstOrDefault(x => x.Id == userId);
+            var user = await _uow.UserRepository.GetUserByIdAsync(User.GetUserId());
             var profileViewModel = new ProfileViewModel
             {
                 FirstName = user.FirstName,
@@ -129,8 +128,7 @@ namespace AcademyPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> Profile(ProfileViewModel profileViewModel)
         {
-            var userId = _userManager.GetUserId(HttpContext.User);
-            var user = _userManager.Users.Include(x => x.status).FirstOrDefault(x => x.Id == userId);
+            var user = await _uow.UserRepository.GetUserByIdAsync(User.GetUserId());
             if (ModelState.IsValid)
             {
                 var result = await _uow.UserRepository.UpdateProfileAsync(profileViewModel, user);
