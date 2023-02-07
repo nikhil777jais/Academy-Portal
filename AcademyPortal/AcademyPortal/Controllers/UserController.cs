@@ -156,8 +156,8 @@ namespace AcademyPortal.Controllers
         public async Task<IActionResult> UpdateUserRole(string id)
         {
             var user = await _uow.UserRepository.GetUserByIdAsync(id);
-            ViewBag.listRoles = (from role in _roleManager.Roles select role.Name).ToList();
-            ViewBag.listStatus = await (from status in _db.AllStatus select status.Name).ToListAsync();
+            ViewBag.listRoles = from role in await _uow.RoleRepository.GetRolesAsync() select role.Name;
+            ViewBag.listStatus = from status in await _uow.StatusRepository.GetAllStatus() select status.Name;
             ViewData["user"] = user;
             var roles = await _userManager.GetRolesAsync(user);
             var updateRoleViewModel = new UpdateRoleViewModel
@@ -189,8 +189,8 @@ namespace AcademyPortal.Controllers
                     return RedirectToRoute("updateRole");
                 }
             }
-            ViewBag.listRoles = (from role in _roleManager.Roles select role.Name).ToList();
-            ViewBag.listStatus = await (from status in _db.AllStatus select status.Name).ToListAsync();
+            ViewBag.listRoles = from role in await _uow.RoleRepository.GetRolesAsync() select role.Name;
+            ViewBag.listStatus = from status in await _uow.StatusRepository.GetAllStatus() select status.Name;
             ViewData["user"] = user;
             return View("UpdateUserRole", updateRoleViewModel);
         }
@@ -207,10 +207,13 @@ namespace AcademyPortal.Controllers
                 {
                     user.status = _db.AllStatus.Where(s => s.Name == updateRoleViewModel.Status).FirstOrDefault();
 
-                    await _userManager.UpdateAsync(user);
-                    TempData["Message"] = $"Status updated to {updateRoleViewModel.Status} successfully !!";
-                    TempData["Type"] = "success";
-                    return RedirectToRoute("updateRole", new {Id = user.Id});
+                    if(await _uow.SaveChangesAsync()){
+                        Console.WriteLine("Changes are Saved");                          
+            
+                        TempData["Message"] = $"Status updated to {updateRoleViewModel.Status} successfully !!";
+                        TempData["Type"] = "success";
+                        return RedirectToRoute("updateRole", new {Id = user.Id});
+                    }
                 }
             }
             return RedirectToRoute("updateRole", new {Id = user.Id});
