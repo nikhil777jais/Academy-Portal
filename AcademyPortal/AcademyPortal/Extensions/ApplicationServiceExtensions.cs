@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AcademyPortal.Model;
+using AcademyPortal.Models;
 using AcademyPortal.Repository.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace AcademyPortal.Extensions
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddDbContext<AcademyPortalDbContext>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.ConfigureApplicationCookie(
                 options => options.AccessDeniedPath = new PathString("/User/AccessDenied")
             );

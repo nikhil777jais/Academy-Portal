@@ -1,5 +1,4 @@
-﻿using AcademyPortal.Model;
-using AcademyPortal.Models;
+﻿using AcademyPortal.Models;
 using AcademyPortal.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

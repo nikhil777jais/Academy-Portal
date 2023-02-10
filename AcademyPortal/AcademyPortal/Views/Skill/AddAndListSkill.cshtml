@@ -60,8 +60,8 @@
                                 <td class="py-2" width=20%>@Html.DisplayFor(modelItem => item.Family)</td>
                                 <td class="py-2" width=20%>@Html.DisplayFor(modelItem => item.CreatedBy.Email)</td>
                                 <td class="py-2" width=30%>
-                                    <a class="btn btn-danger" asp-route="deleteskill" asp-route-id=@item.Id>Delete</a>
-                                    <a class="btn btn-warning" asp-route="updateskill" asp-route-id=@item.Id>Edit</a>
+                                    <a class="btn btn-danger" asp-route="deleteSkill" asp-route-id=@item.Id>Delete</a>
+                                    <a class="btn btn-warning" asp-route="updateSkill" asp-route-id=@item.Id>Edit</a>
                                 </td>
                             </tr>
                         }

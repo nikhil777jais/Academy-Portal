@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AcademyPortal.Model;
 using AcademyPortal.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace AcademyPortal.Model
+namespace AcademyPortal.Models
 {
     public class AcademyPortalDbContext:IdentityDbContext<ApplicationUser>
     {

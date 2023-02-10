@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using AcademyPortal.Model;
+using AcademyPortal.Models;
 using AcademyPortal.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

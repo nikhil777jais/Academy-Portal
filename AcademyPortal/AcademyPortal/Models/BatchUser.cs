@@ -1,6 +1,4 @@
-﻿using AcademyPortal.Model;
-
-namespace AcademyPortal.Models
+﻿namespace AcademyPortal.Models
 {
     public class BatchUser
     {

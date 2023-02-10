@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AcademyPortal.Model;
+using AcademyPortal.Models;
 using AcademyPortal.Repository.AllStatus;
 using AcademyPortal.Repository.Roles;
+using AcademyPortal.Repository.Skills;
 using AcademyPortal.Repository.User;
 using Microsoft.AspNetCore.Identity;
 
@@ -36,6 +37,8 @@ namespace AcademyPortal.Repository.UnitOfWork
         public IRoleRepository RoleRepository => new RoleRepository(_roleManager);
 
         public IStatusRepository StatusRepository => new StatusRepository(_context);
+
+        public ISkillRepository SkillRepository => new SkillRepository(_context);
 
         public async Task<bool> SaveChangesAsync()
         {

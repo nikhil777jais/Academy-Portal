@@ -4,7 +4,7 @@ using AcademyPortal.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using AcademyPortal.Extensions;
 using Microsoft.AspNetCore.Identity;
-using AcademyPortal.Model;
+using AcademyPortal.Models;
 using Microsoft.EntityFrameworkCore;
 namespace AcademyPortal.Controllers
 {
