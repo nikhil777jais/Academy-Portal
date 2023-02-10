@@ -77,19 +77,19 @@ namespace AcademyPortal.Repository.User
             return await _db.Users.Include(u => u.status).ToListAsync();   
         }
 
-        public Task<IdentityResult> AddUserToRoleAsync(IdentityRole role)
+        public async Task<IdentityResult> AddUserToRoleAsync(ApplicationUser user, string role)
         {
-            throw new NotImplementedException();
+            return await _userManager.AddToRoleAsync(user, role);
         }
 
-        public Task<IdentityResult> RemoveUserFromRolesAsync(IEnumerable<IdentityRole> role)
+        public async Task<IdentityResult> RemoveUserFromRolesAsync(ApplicationUser user, IEnumerable<string> roles)
         {
-            throw new NotImplementedException();
+            return await _userManager.RemoveFromRolesAsync(user, roles);
         }
 
-        public Task<IEnumerable<IdentityRole>> GetUsersRolesAsync()
+        public async Task<IEnumerable<string>> GetUsersRolesAsync(ApplicationUser user)
         {
-            throw new NotImplementedException();
+            return await _userManager.GetRolesAsync(user);
         }
     }
 }

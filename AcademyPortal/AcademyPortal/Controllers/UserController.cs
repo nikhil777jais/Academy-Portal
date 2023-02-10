@@ -11,16 +11,10 @@ namespace AcademyPortal.Controllers
     public class UserController : Controller
     {
         private readonly IUnitOfWork _uow;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly AcademyPortalDbContext _db;
 
-        public UserController(IUnitOfWork uow, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, AcademyPortalDbContext db)
+        public UserController(IUnitOfWork uow)
         {
             _uow = uow;
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _db = db;
         }
 
         [Route("user/signup", Name = "signup")]
@@ -159,7 +153,7 @@ namespace AcademyPortal.Controllers
             ViewBag.listRoles = from role in await _uow.RoleRepository.GetRolesAsync() select role.Name;
             ViewBag.listStatus = from status in await _uow.StatusRepository.GetAllStatus() select status.Name;
             ViewData["user"] = user;
-            var roles = await _userManager.GetRolesAsync(user);
+            var roles = (await _uow.UserRepository.GetUsersRolesAsync(user)).ToList();
             var updateRoleViewModel = new UpdateRoleViewModel
             {
                 Role = roles.Any() ? roles[0] : "Please Select any role",
@@ -179,11 +173,11 @@ namespace AcademyPortal.Controllers
                 if (ModelState.IsValid)
                 {
                     //Remove Previous roles
-                    var userRoles = await _userManager.GetRolesAsync(user);
-                    await _userManager.RemoveFromRolesAsync(user, userRoles);
-                    
+                    var userRoles = await _uow.UserRepository.GetUsersRolesAsync(user);
+                    await _uow.UserRepository.RemoveUserFromRolesAsync(user, userRoles);
+            
                     //Add to new role
-                    await _userManager.AddToRoleAsync(user, updateRoleViewModel.Role);
+                    await _uow.UserRepository.AddUserToRoleAsync(user, updateRoleViewModel.Role);
                     TempData["Message"] = $"Role updated to {updateRoleViewModel.Role} successfully !!";
                     TempData["Type"] = "success";
                     return RedirectToRoute("updateRole");
@@ -205,8 +199,7 @@ namespace AcademyPortal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    user.status = _db.AllStatus.Where(s => s.Name == updateRoleViewModel.Status).FirstOrDefault();
-
+                    user.status = await _uow.StatusRepository.GetStatusByNameAsync(updateRoleViewModel.Status);
                     if(await _uow.SaveChangesAsync()){
                         Console.WriteLine("Changes are Saved");                          
             

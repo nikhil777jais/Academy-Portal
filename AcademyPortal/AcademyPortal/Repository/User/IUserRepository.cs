@@ -11,13 +11,12 @@ namespace AcademyPortal.Repository.User
         Task<SignInResult> SignInUserAsync(SignInViewModel signInViewModel);
         Task LogoutUser();
         Task<IdentityResult> UpdateProfileAsync(ProfileViewModel profileViewModel, ApplicationUser user);
-        Task<IdentityResult> AddUserToRoleAsync(IdentityRole role);
-        Task<IdentityResult> RemoveUserFromRolesAsync(IEnumerable<IdentityRole> role);
-        Task<IEnumerable<IdentityRole>> GetUsersRolesAsync();
+        Task<IdentityResult> AddUserToRoleAsync(ApplicationUser user, string role);
+        Task<IdentityResult> RemoveUserFromRolesAsync(ApplicationUser user, IEnumerable<string> roles);
+        Task<IEnumerable<string>> GetUsersRolesAsync(ApplicationUser user);
         Task<ApplicationUser> GetUserByIdAsync(string id);
         Task<ApplicationUser> GetUserByUsernameAsync(string username);
         Task<ApplicationUser> GetUserByClaimsAsync(ClaimsPrincipal claims);
         Task<IEnumerable<ApplicationUser>> GetUsersAsync();
-
     }
 }
