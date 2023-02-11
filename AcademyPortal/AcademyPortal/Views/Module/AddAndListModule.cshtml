@@ -1,7 +1,7 @@
 ﻿@model AcademyPortal.ViewModel.ModuleViewModel;
 @{
     ViewData["Title"] = "Add and List Skill";
-    var skills = ViewData["modules"] as IEnumerable<Module>;
+    var Modules = ViewData["modules"] as IEnumerable<Module>;
 }
 <div class="container-fluid">
     <div class="row justify-content-center ">
@@ -41,10 +41,10 @@
             }
         </div>
         <div class="col-md-8 ">
-            @if (skills.Any())
+            @if (Modules.Any())
             {
                 <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
-                    Skills Present in Databse
+                    Modules Present in Databse
                 </div>
                 <table class="table table-primary border-primary table-striped table-hover align-middle table-bordered">
                     <thead class="table-dark">
@@ -58,7 +58,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in skills)
+                        @foreach (var item in Modules)
                         {
                             <tr class="text-center">
                                 <td class="py-2" width=10%>@Html.DisplayFor(modelItem => item.Id)</td>
@@ -67,8 +67,8 @@
                                 <td class="py-2" width=15%>@Html.DisplayFor(modelItem => item.Proficiency)</td>
                                 <td class="py-2" width=20%>@Html.DisplayFor(modelItem => item.CreatedBy.Email)</td>
                                 <td class="py-2" width=25%>
-                                    <a class="btn btn-danger" asp-route="deletemodule" asp-route-id=@item.Id>Delete</a>
-                                    <a class="btn btn-warning" asp-route="updatemodule" asp-route-id=@item.Id>Edit</a>
+                                    <a class="btn btn-danger" asp-route="deleteModule" asp-route-id=@item.Id>Delete</a>
+                                    <a class="btn btn-warning" asp-route="updateModule" asp-route-id=@item.Id>Edit</a>
                                 </td>
                             </tr>
                         }

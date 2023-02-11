@@ -1,7 +1,7 @@
 ﻿@model AcademyPortal.ViewModel.ModuleViewModel;
 @{
     ViewData["Title"] = "Update-Module";
-    var moduleobj = ViewData["moduleobj"] as Module;
+    var module = ViewData["module"] as Module;
 }
 <div class="container-fluid">
     <div class="row justify-content-center ">
@@ -29,7 +29,7 @@
 
                     <div class="form-group ">
                         <input type="submit" value="Update" class="btn btn-success mt-2" />
-                        <a class="btn btn-danger mt-2" asp-route="addmodule">GoBack</a>
+                        <a class="btn btn-danger mt-2" asp-route="addModule">GoBack</a>
                     </div>
                 </form>
             </div>
@@ -46,12 +46,12 @@
                 Module Details
             </div>
             <ul class="list-group">
-                <li class="list-group-item active" aria-current="true">Details of module with Id(@moduleobj.Id)</li>
-                <li class="list-group-item"><b>Id: </b>@moduleobj.Id</li>
-                <li class="list-group-item"><b>Module Name: </b>@moduleobj.Name</li>
-                <li class="list-group-item"><b>Module Technology: </b>@moduleobj.Technology</li>
-                <li class="list-group-item"><b>Module Proficiency: </b>@moduleobj.Proficiency</li>
-                <li class="list-group-item"><b>Crated By: </b>@moduleobj.CreatedBy</li>
+                <li class="list-group-item active" aria-current="true">Details of module with Id(@module.Id)</li>
+                <li class="list-group-item"><b>Id: </b>@module.Id</li>
+                <li class="list-group-item"><b>Module Name: </b>@module.Name</li>
+                <li class="list-group-item"><b>Module Technology: </b>@module.Technology</li>
+                <li class="list-group-item"><b>Module Proficiency: </b>@module.Proficiency</li>
+                <li class="list-group-item"><b>Crated By: </b>@module.CreatedBy</li>
             </ul>
         </div>
     </div>

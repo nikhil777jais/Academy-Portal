@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AcademyPortal.Models;
 using AcademyPortal.Repository.AllStatus;
+using AcademyPortal.Repository.Modules;
 using AcademyPortal.Repository.Roles;
 using AcademyPortal.Repository.Skills;
 using AcademyPortal.Repository.User;
@@ -39,6 +40,8 @@ namespace AcademyPortal.Repository.UnitOfWork
         public IStatusRepository StatusRepository => new StatusRepository(_context);
 
         public ISkillRepository SkillRepository => new SkillRepository(_context);
+
+        public IModuleRepository ModuleRepository => new ModuleRepository(_context);
 
         public async Task<bool> SaveChangesAsync()
         {

@@ -8,7 +8,7 @@
             @if (skills.Any())
             {
                 <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
-                    Skills Present in Databse
+                    Skill-Modules Mapping Details
                 </div>
                 <table class="table table-info border-info table-striped table-hover align-middle table-bordered">
                     <thead class="table-dark">
@@ -42,7 +42,7 @@
                                     }
                                 </td>
                                 <td class="py-2" width=25%>
-                                    <a class="btn btn-warning" asp-route="addmodules" asp-route-id=@item.Id>Map Modules</a>
+                                    <a class="btn btn-warning" asp-route="addModulesToSkill" asp-route-id=@item.Id>Map Modules</a>
                                 </td>
                             </tr>
                         }

@@ -14,5 +14,7 @@ namespace AcademyPortal.Repository.Skills
         Task AddSkillAsync(ApplicationUser user, SkillViewModel skillViewModel); 
         void UpdateSkill(Skill skill);
         void RemoveSkill(Skill skill);
+        Task<IEnumerable<Skill>> GetSkillsWithModuleAsync();
+        Task<Skill> GetSkillByIdWithModuleAsync(int id);
     }
 }
