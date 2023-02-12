@@ -3,7 +3,6 @@ using AcademyPortal.Repository.UnitOfWork;
 using AcademyPortal.ViewModel;
 using AcademyPortal.Extensions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
