@@ -49,12 +49,12 @@
                         <td class="py-2" width=35%>
                             @if (User.IsInRole("Faculty"))
                             {
-                                <a class="btn btn-warning" asp-route="updatebatchstatus" asp-route-id=@item.Id>Update Status</a>
+                                <a class="btn btn-warning" asp-route="updateBatchStatus" asp-route-id=@item.Id>Update Status</a>
                             }
                             else
                             {
-                                <a class="btn btn-warning" asp-route="updatebatch" asp-route-id=@item.Id>Edit</a>
-                                <a class="btn btn-warning" asp-route="addfaculty" asp-route-id=@item.Id>Assigne To</a>
+                                <a class="btn btn-warning" asp-route="updateBatch" asp-route-id=@item.Id>Edit</a>
+                                <a class="btn btn-warning" asp-route="addFaculty" asp-route-id=@item.Id>Assigne To</a>
                             }
                         </td>
                     </tr>

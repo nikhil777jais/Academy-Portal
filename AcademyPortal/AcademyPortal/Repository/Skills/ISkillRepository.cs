@@ -9,6 +9,7 @@ namespace AcademyPortal.Repository.Skills
 {
     public interface ISkillRepository
     {
+        Task<IEnumerable<Skill>> GetSkillsWithUserAsync();
         Task<IEnumerable<Skill>> GetSkillsAsync();
         Task<Skill> GetSkillByIdAsync(int id);
         Task AddSkillAsync(ApplicationUser user, SkillViewModel skillViewModel); 

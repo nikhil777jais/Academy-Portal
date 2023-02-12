@@ -7,6 +7,8 @@ using AcademyPortal.Repository.User;
 using AcademyPortal.Repository.AllStatus;
 using AcademyPortal.Repository.Skills;
 using AcademyPortal.Repository.Modules;
+using AcademyPortal.Repository.Batches;
+using AcademyPortal.Repository.BatchUsers;
 
 namespace AcademyPortal.Repository.UnitOfWork
 {
@@ -17,6 +19,8 @@ namespace AcademyPortal.Repository.UnitOfWork
         public IStatusRepository StatusRepository {get;}
         public ISkillRepository SkillRepository {get;}
         public IModuleRepository ModuleRepository {get;} 
+        public IBatchRepository BatchRepository {get;} 
+        public IBatchUserRepository BatchUserRepository {get;} 
         Task<bool> SaveChangesAsync();
     }
 }

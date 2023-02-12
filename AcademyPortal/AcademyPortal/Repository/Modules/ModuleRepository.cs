@@ -45,9 +45,14 @@ namespace AcademyPortal.Repository.Modules
             return module;
         }
 
-        public async Task<IEnumerable<Module>> GetModulesAsync()
+        public async Task<IEnumerable<Module>> GetModulesWithUserAsync()
         {
             return await _db.Modules.Include(m => m.CreatedBy).ToListAsync();
+        }
+        
+        public async Task<IEnumerable<Module>> GetModulesAsync()
+        {
+            return await _db.Modules.ToListAsync();
         }
 
         public async Task<Module> GetModulesByIdWithSkillsAsync(int id)

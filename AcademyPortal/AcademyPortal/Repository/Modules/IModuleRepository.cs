@@ -10,6 +10,7 @@ namespace AcademyPortal.Repository.Modules
     public interface IModuleRepository
     {
         Task<IEnumerable<Module>> GetModulesAsync();
+        Task<IEnumerable<Module>> GetModulesWithUserAsync();
         Task AddModuleAsync(ApplicationUser user, ModuleViewModel moduleViewModel);
         Task<Module> GetModuleByIdAsync(int id);
         void UpdateModule(Module module);

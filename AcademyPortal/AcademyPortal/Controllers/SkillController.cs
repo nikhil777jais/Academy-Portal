@@ -22,8 +22,7 @@ namespace AcademyPortal.Controllers
         [Route("skill", Name = "addSkill")]
         public async Task<IActionResult> AddAndListSkill()
         {
-
-            var skills = await _uow.SkillRepository.GetSkillsAsync();
+            var skills = await _uow.SkillRepository.GetSkillsWithUserAsync();
             ViewData["skills"] = skills;
             return View("AddAndListSkill");
         }

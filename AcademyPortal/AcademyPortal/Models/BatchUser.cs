@@ -11,3 +11,5 @@
        public Status? status { get; set; } 
     }
 }
+// To avoid redundancy of batch data, Created this bridge table
+// this table table only holds specific data

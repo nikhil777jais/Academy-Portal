@@ -1,7 +1,7 @@
 ﻿@model AcademyPortal.ViewModel.AddFacultyViewModel;
 @{
     ViewData["Title"] = "Add-Faculty-To-Batch";
-    var batchobj = ViewData["batchobj"] as Batch;
+    var batch = ViewData["batch"] as Batch;
 }
 <div class="container-fluid">
     <div class="row justify-content-center ">
@@ -13,13 +13,13 @@
                 <form method="post" novalidate>
                     <div class="form-group pb-1">
                         <label asp-for="Faculties"></label>
-                        <select asp-for="Faculties" class="form-control" asp-items="ViewBag.lstfaculty">
+                        <select asp-for="Faculties" class="form-control" asp-items="ViewBag.listFaculty">
                         </select>
                         <small><span asp-validation-for="Faculties" class="text-danger"></span></small>
                     </div>
                     <div class="form-group ">
                         <input type="submit" value="Add" class="btn btn-success mt-2" />
-                        <a class="btn btn-color mt-2" asp-route="addbatch">GoBack</a>
+                        <a class="btn btn-color mt-2" asp-route="addBatch">GoBack</a>
                     </div>
                 </form>
             </div>
@@ -36,24 +36,24 @@
                 Batch Details
             </div>
             <ul class="list-group">
-                <li class="list-group-item active" aria-current="true">Details of batch with Id(@batchobj.Id)</li>
-                <li class="list-group-item"><b>Id: </b>@batchobj.Id</li>
-                <li class="list-group-item"><b>Skill: </b>@batchobj.RelaedSkill.Name</li>
-                <li class="list-group-item"><b>Module: </b>@batchobj.RelaedModule.Name</li>
-                <li class="list-group-item"><b>Technology: </b>@batchobj.Technology</li>
-                <li class="list-group-item"><b>Batch Start Date: </b>@batchobj.Batch_Start_Date</li>
-                <li class="list-group-item"><b>Batch End Date: </b>@batchobj.Batch_End_Date</li>
-                <li class="list-group-item"><b>Capacity: </b>@batchobj.Batch_Capacity</li>
-                <li class="list-group-item"><b>Classroom Name: </b>@batchobj.Classroom_Name</li>
-                <li class="list-group-item"><b>Created By: </b>@batchobj.CreatedBy</li>
+                <li class="list-group-item active" aria-current="true">Details of batch with Id(@batch.Id)</li>
+                <li class="list-group-item"><b>Id: </b>@batch.Id</li>
+                <li class="list-group-item"><b>Skill: </b>@batch.RelaedSkill.Name</li>
+                <li class="list-group-item"><b>Module: </b>@batch.RelaedModule.Name</li>
+                <li class="list-group-item"><b>Technology: </b>@batch.Technology</li>
+                <li class="list-group-item"><b>Batch Start Date: </b>@batch.Batch_Start_Date</li>
+                <li class="list-group-item"><b>Batch End Date: </b>@batch.Batch_End_Date</li>
+                <li class="list-group-item"><b>Capacity: </b>@batch.Batch_Capacity</li>
+                <li class="list-group-item"><b>Classroom Name: </b>@batch.Classroom_Name</li>
+                <li class="list-group-item"><b>Created By: </b>@batch.CreatedBy</li>
                 <li class="list-group-item"><b>Assigned Faculty: </b>
-                    @if (@batchobj.Users.Any())
+                    @if (@batch.Users.Any())
                     {
                         <ol>
-                            @foreach(var bu in @batchobj.Users)
+                            @foreach(var bu in @batch.Users)
                             {
                                 <li>@bu.User.Email
-                                    <a class="btn btn-danger mx-3 py-0 my-1" href="/@batchobj.Id/removefaculty/@bu.UserId" >Remove</a>
+                                    <a class="btn btn-danger mx-3 py-0 my-1" href="/@batch.Id/removeFaculty/@bu.UserId">Remove</a>
                                 </li>
                             }
                             </ol>

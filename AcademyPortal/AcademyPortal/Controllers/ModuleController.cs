@@ -22,7 +22,7 @@ namespace AcademyPortal.Controllers
         [Route("module", Name = "addModule")]
         public async Task<IActionResult> AddAndListModule()
         {
-            ViewData["modules"] = await _uow.ModuleRepository.GetModulesAsync();
+            ViewData["modules"] = await _uow.ModuleRepository.GetModulesWithUserAsync();
             return View("AddAndListModule");
         }
 

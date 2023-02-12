@@ -91,5 +91,10 @@ namespace AcademyPortal.Repository.User
         {
             return await _userManager.GetRolesAsync(user);
         }
+
+        public async Task<IEnumerable<ApplicationUser>> GetUsersInRoleAsync(string  role)
+        {
+            return await _userManager.GetUsersInRoleAsync(role);
+        }
     }
 }

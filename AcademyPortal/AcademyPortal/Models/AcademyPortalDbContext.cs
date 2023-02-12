@@ -15,20 +15,20 @@ namespace AcademyPortal.Models
 
         }
 
-        protected override void OnModelCreating(ModelBuilder modelbBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelbBuilder);
-            modelbBuilder.Entity<Batch>().HasOne(b => b.CreatedBy).WithMany(u => u.CreatedBatches);
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Batch>().HasOne(b => b.CreatedBy).WithMany(u => u.CreatedBatches);
 
-            modelbBuilder.Entity<BatchUser>()
+            modelBuilder.Entity<BatchUser>()
                 .HasKey(bu => new { bu.BatchId , bu.UserId});
 
-            modelbBuilder.Entity<BatchUser>()
+            modelBuilder.Entity<BatchUser>()
                 .HasOne(bu => bu.Batch)
                 .WithMany(b => b.Users)
                 .HasForeignKey(bu => bu.BatchId);
 
-            modelbBuilder.Entity<BatchUser>()
+            modelBuilder.Entity<BatchUser>()
                 .HasOne(bu => bu.User)
                 .WithMany(bu => bu.Batches)
                 .HasForeignKey(bu => bu.UserId);
@@ -38,5 +38,6 @@ namespace AcademyPortal.Models
         public DbSet<Skill> Skills { get; set; } 
         public DbSet<Module> Modules { get; set; } 
         public DbSet<Batch> Batches { get; set; }
+        public DbSet<BatchUser> BatchUser { get; set; }
     }
 }

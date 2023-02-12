@@ -1,7 +1,7 @@
 ﻿@model AcademyPortal.ViewModel.AddBatchViewModel;
 @{
     ViewData["Title"] = "Update-Batch";
-    var batchobj = ViewData["batchobj"] as Batch;
+    var batch = ViewData["batch"] as Batch;
 }
 <div class="container-fluid">
     <div class="row justify-content-center ">
@@ -13,14 +13,14 @@
                 <form method="post" novalidate>
                     <div class="form-group pb-1">
                         <label asp-for="RelaedSkill"></label>
-                        <select asp-for="RelaedSkill" class="form-control" asp-items="ViewBag.lstskill">
+                        <select asp-for="RelaedSkill" class="form-control" asp-items="ViewBag.listSkill">
                             <option value="">Please Select Skill</option>
                         </select>
                         <small><span asp-validation-for="RelaedSkill" class="text-danger"></span></small>
                     </div>
                     <div class="form-group pb-1">
                         <label asp-for="RelaedModule"></label>
-                        <select asp-for="RelaedModule" class="form-control" asp-items="ViewBag.lstmodule">
+                        <select asp-for="RelaedModule" class="form-control" asp-items="ViewBag.listModule">
                             <option value="">Please Select Module</option>
                         </select>
                         <small><span asp-validation-for="RelaedModule" class="text-danger"></span></small>
@@ -53,7 +53,7 @@
 
                     <div class="form-group ">
                         <input type="submit" value="Update Batch" class="btn btn-success mt-2" />
-                        <a class="btn btn-color mt-2" asp-route="addbatch">GoBack</a>
+                        <a class="btn btn-color mt-2" asp-route="addBatch">GoBack</a>
                     </div>
                 </form>
             </div>
@@ -65,7 +65,7 @@
                 </div>
             }
         </div>
-        <partial name="_batchDetails" model="@batchobj" />
+        <partial name="_batchDetails" model="@batch" />
     </div>
 </div>
 </b>

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AcademyPortal.Models;
 using AcademyPortal.Repository.AllStatus;
+using AcademyPortal.Repository.Batches;
+using AcademyPortal.Repository.BatchUsers;
 using AcademyPortal.Repository.Modules;
 using AcademyPortal.Repository.Roles;
 using AcademyPortal.Repository.Skills;
@@ -42,6 +44,10 @@ namespace AcademyPortal.Repository.UnitOfWork
         public ISkillRepository SkillRepository => new SkillRepository(_context);
 
         public IModuleRepository ModuleRepository => new ModuleRepository(_context);
+
+        public IBatchRepository BatchRepository =>  new BatchRepository(_context, _userManager);
+
+        public IBatchUserRepository BatchUserRepository => new BatchUserRepository(_context);
 
         public async Task<bool> SaveChangesAsync()
         {

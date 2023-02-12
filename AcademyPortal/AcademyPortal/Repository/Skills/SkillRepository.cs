@@ -35,6 +35,10 @@ namespace AcademyPortal.Repository.Skills
 
         public async Task<IEnumerable<Skill>> GetSkillsAsync()
         {
+            return await _db.Skills.ToListAsync();
+        }
+        public async Task<IEnumerable<Skill>> GetSkillsWithUserAsync()
+        {
             return await _db.Skills.Include(s => s.CreatedBy).ToListAsync();
         }
 
@@ -58,6 +62,5 @@ namespace AcademyPortal.Repository.Skills
             var skill =  await _db.Skills.Include(s => s.CreatedBy).Include(s => s.RelatedModules).SingleOrDefaultAsync(s => s.Id == id);  
             return skill;                            
         }
-
     }
 }
