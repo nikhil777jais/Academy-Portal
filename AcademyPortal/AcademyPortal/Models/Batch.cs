@@ -1,4 +1,4 @@
-﻿using AcademyPortal.Model;
+﻿using AcademyPortal.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

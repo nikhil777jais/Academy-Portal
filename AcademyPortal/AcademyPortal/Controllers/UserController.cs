@@ -1,34 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AcademyPortal.ViewModel;
-using AcademyPortal.Repository;
+using AcademyPortal.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
-using System.Dynamic;
+using AcademyPortal.Extensions;
 using Microsoft.AspNetCore.Identity;
-using AcademyPortal.Model;
+using AcademyPortal.Models;
 using Microsoft.EntityFrameworkCore;
 namespace AcademyPortal.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserRepository _userRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly AcademyPortalDbContext _db;
+        private readonly IUnitOfWork _uow;
 
-        public UserController(IUserRepository userRepository, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, AcademyPortalDbContext db)
+        public UserController(IUnitOfWork uow)
         {
-            _userRepository = userRepository;
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _db = db;
+            _uow = uow;
         }
 
         [Route("user/signup", Name = "signup")]
-        public async Task<IActionResult> SignUp()
+        public IActionResult SignUp()
         {
-            Console.WriteLine("-------------------");
-            Console.WriteLine("Some random new text ");
-            Console.WriteLine("-------------------");
             if (User.Identity.IsAuthenticated)
             {
                 TempData["Message"] = $"Welcome To Academy Portal";
@@ -44,10 +35,10 @@ namespace AcademyPortal.Controllers
             
             if (ModelState.IsValid)
             {
-                var result = await _userRepository.CreateUserAsync(signUpUserViewModel);
+                var result = await _uow.UserRepository.CreateUserAsync(signUpUserViewModel);
                 if (result.Succeeded)
                 {
-                    return RedirectToRoute("signin");
+                    return RedirectToRoute("signIn");
                 }
                 else
                 {
@@ -60,39 +51,42 @@ namespace AcademyPortal.Controllers
             return View("SignUp");
         }
 
-        [Route("user/signin", Name = "signin")]
-        public async Task<IActionResult> SignIn()
+        [Route("user/signIn", Name = "signIn")]
+        public IActionResult SignIn()
         {
             if (User.Identity.IsAuthenticated)
             {
-                TempData["Message"] = $"Welcome To Academy Poertal";
+                TempData["Message"] = $"Welcome To Academy Portal";
                 return RedirectToAction("Index", "Home");
             }
             return View("SignIn");
         }
 
-        [Route("user/signin", Name = "signin")]
+        [Route("user/signIn", Name = "signIn")]
         [HttpPost]
         public async Task<IActionResult> SignIn(SignInViewModel signInViewModel)
         {
-            var user = await _userManager.Users.Include(u => u.status).Where(u => u.Email == signInViewModel.Email).FirstOrDefaultAsync();
-            if(user.status.Name != "Active")
-            {
-                ModelState.AddModelError("", $"Hi, {user.Email} Your Current Status is {user.status.Name}");
-                return View("SignIn");
-            }            
             if (ModelState.IsValid)
             {
-                var result = await _userRepository.SignInUserAsync(signInViewModel);
+                var user = await _uow.UserRepository.GetUserByUsernameAsync(signInViewModel.Email);     
+                if(user == null){
+                    ModelState.AddModelError("", $"This Username or Email is not registered.");
+                    return View("SignIn");
+                }
+
+                if(user?.status?.Name != "Active")
+                {
+                    ModelState.AddModelError("", $"Hi, {user?.Email} Your Current Status is {user?.status?.Name} please contact Admin");
+                    return View("SignIn");
+                } 
+
+                var result = await _uow.UserRepository.SignInUserAsync(signInViewModel);
                 if (result.Succeeded)
                 {
-                    TempData["Message"] = $"Welcome To Academy Poertal";
+                    TempData["Message"] = $"Welcome To Academy Portal";
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Provided Credentials are Invalid");
-                }
+                ModelState.AddModelError("", "Provided Credentials are Invalid");
             }
             return View("SignIn");
         }
@@ -101,16 +95,15 @@ namespace AcademyPortal.Controllers
         [Route("user/logout", Name = "logout")]
         public async Task<IActionResult> Logout()
         {
-            await _userRepository.LogoutUser();
-            return RedirectToAction("signin");
+            await _uow.UserRepository.LogoutUser();
+            return RedirectToAction("signIn");
         }
 
         [Authorize]
         [Route("user/profile", Name = "profile")]
         public async Task<IActionResult> Profile()
         {
-            var userId = _userManager.GetUserId(HttpContext.User);
-            var user = _userManager.Users.Include(x => x.status).FirstOrDefault(x => x.Id == userId);
+            var user = await _uow.UserRepository.GetUserByIdAsync(User.GetUserId());
             var profileViewModel = new ProfileViewModel
             {
                 FirstName = user.FirstName,
@@ -129,11 +122,10 @@ namespace AcademyPortal.Controllers
         [HttpPost]
         public async Task<IActionResult> Profile(ProfileViewModel profileViewModel)
         {
-            var userId = _userManager.GetUserId(HttpContext.User);
-            var user = _userManager.Users.Include(x => x.status).FirstOrDefault(x => x.Id == userId);
+            var user = await _uow.UserRepository.GetUserByIdAsync(User.GetUserId());
             if (ModelState.IsValid)
             {
-                var result = await _userRepository.UpdateProfileAsync(profileViewModel, user);
+                var result = await _uow.UserRepository.UpdateProfileAsync(profileViewModel, user);
                 if (result.Succeeded)
                 {
                     ViewData["user"] = user;
@@ -149,19 +141,19 @@ namespace AcademyPortal.Controllers
         [Route("user/list", Name = "list")]
         public async Task<IActionResult> ListUser()
         {
-            var users = _userManager.Users.Include(u => u.status).ToList();
+            var users = await _uow.UserRepository.GetUsersAsync();
             return View("ListUser", users);
         }
 
         [Authorize(Roles = "Admin")]
-        [Route("user/updaterole/{Id}", Name = "updaterole")]
-        public async Task<IActionResult> UpdateUserRole(string Id)
+        [Route("user/updateRole/{id}", Name = "updateRole")]
+        public async Task<IActionResult> UpdateUserRole(string id)
         {
-            var user = _userManager.Users.Include(u => u.status).FirstOrDefault(u => u.Id == Id);
-            ViewBag.lstroles = (from role in _roleManager.Roles select role.Name).ToList();
-            ViewBag.lststatus = await (from status in _db.AllStatus select status.Name).ToListAsync();
+            var user = await _uow.UserRepository.GetUserByIdAsync(id);
+            ViewBag.listRoles = from role in await _uow.RoleRepository.GetRolesAsync() select role.Name;
+            ViewBag.listStatus = from status in await _uow.StatusRepository.GetAllStatus() select status.Name;
             ViewData["user"] = user;
-            var roles = await _userManager.GetRolesAsync(user);
+            var roles = (await _uow.UserRepository.GetUsersRolesAsync(user)).ToList();
             var updateRoleViewModel = new UpdateRoleViewModel
             {
                 Role = roles.Any() ? roles[0] : "Please Select any role",
@@ -171,51 +163,53 @@ namespace AcademyPortal.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [Route("user/updaterole/{Id}", Name = "updaterole")]
+        [Route("user/updateRole/{Id}", Name = "updateRole")]
         [HttpPost]
-        public async Task<IActionResult> UpdateUserRole(string Id, UpdateRoleViewModel updateRoleViewModel)
+        public async Task<IActionResult> UpdateUserRole(string id, UpdateRoleViewModel updateRoleViewModel)
         {
-            var user = _userManager.Users.Include(u => u.status).FirstOrDefault(u => u.Id == Id);
+            var user = await _uow.UserRepository.GetUserByIdAsync(id);
             if (user != null)
             {
                 if (ModelState.IsValid)
                 {
-                    //Remove Privious roles
-                    var useroles = await _userManager.GetRolesAsync(user);
-                    await _userManager.RemoveFromRolesAsync(user, useroles);
-                    
+                    //Remove Previous roles
+                    var userRoles = await _uow.UserRepository.GetUsersRolesAsync(user);
+                    await _uow.UserRepository.RemoveUserFromRolesAsync(user, userRoles);
+            
                     //Add to new role
-                    await _userManager.AddToRoleAsync(user, updateRoleViewModel.Role);
+                    await _uow.UserRepository.AddUserToRoleAsync(user, updateRoleViewModel.Role);
                     TempData["Message"] = $"Role updated to {updateRoleViewModel.Role} successfully !!";
                     TempData["Type"] = "success";
-                    return RedirectToRoute("updaterole");
+                    return RedirectToRoute("updateRole");
                 }
             }
-            ViewBag.lstroles = (from role in _roleManager.Roles select role.Name).ToList();
-            ViewBag.lststatus = await (from status in _db.AllStatus select status.Name).ToListAsync();
+            ViewBag.listRoles = from role in await _uow.RoleRepository.GetRolesAsync() select role.Name;
+            ViewBag.listStatus = from status in await _uow.StatusRepository.GetAllStatus() select status.Name;
             ViewData["user"] = user;
             return View("UpdateUserRole", updateRoleViewModel);
         }
         
         [Authorize(Roles = "Admin")]
-        [Route("user/updatestatus/{Id}", Name = "updatestatus")]
+        [Route("user/updateStatus/{id}", Name = "updateStatus")]
         [HttpPost]
-        public async Task<IActionResult> UpdateUserStatus(string Id, UpdateRoleViewModel updateRoleViewModel)
+        public async Task<IActionResult> UpdateUserStatus(string id, UpdateRoleViewModel updateRoleViewModel)
         {
-            var user = _userManager.Users.Include(u => u.status).FirstOrDefault(u => u.Id == Id);
+            var user = await _uow.UserRepository.GetUserByIdAsync(id);
             if (user != null)
             {
                 if (ModelState.IsValid)
                 {
-                    user.status = _db.AllStatus.Where(s => s.Name == updateRoleViewModel.Status).FirstOrDefault();
-
-                    await _userManager.UpdateAsync(user);
-                    TempData["Message"] = $"Status updated to {updateRoleViewModel.Status} successfully !!";
-                    TempData["Type"] = "success";
-                    return RedirectToRoute("updaterole", new {Id = user.Id});
+                    user.status = await _uow.StatusRepository.GetStatusByNameAsync(updateRoleViewModel.Status);
+                    if(await _uow.SaveChangesAsync()){
+                        Console.WriteLine("Changes are Saved");                          
+            
+                        TempData["Message"] = $"Status updated to {updateRoleViewModel.Status} successfully !!";
+                        TempData["Type"] = "success";
+                        return RedirectToRoute("updateRole", new {Id = user.Id});
+                    }
                 }
             }
-            return RedirectToRoute("updaterole", new {Id = user.Id});
+            return RedirectToRoute("updateRole", new {Id = user.Id});
         }
 
         [HttpGet]

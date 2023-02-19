@@ -1,7 +1,7 @@
 ﻿@model AcademyPortal.ViewModel.SkillViewModel;
 @{
     ViewData["Title"] = "Update-Skill";
-    var skillobj = ViewData["skillobj"] as Skill;
+    var skill = ViewData["skill"] as Skill;
 }
 <div class="container-fluid">
     <div class="row justify-content-center ">
@@ -23,7 +23,7 @@
                     </div>
                     <div class="form-group ">
                         <input type="submit" value="Update" class="btn btn-success mt-2" />
-                        <a class="btn btn-danger mt-2" asp-route="addskill">GoBack</a>
+                        <a class="btn btn-danger mt-2" asp-route="addSkill">GoBack</a>
                     </div>
                 </form>
             </div>
@@ -40,11 +40,11 @@
                 Skill Details
             </div>
             <ul class="list-group">
-                <li class="list-group-item active" aria-current="true">Details of skill with Id(@skillobj.Id)</li>
-                <li class="list-group-item"><b>Id: </b>@skillobj.Id</li>
-                <li class="list-group-item"><b>Skill Name: </b>@skillobj.Name</li>
-                <li class="list-group-item"><b>Skill Family: </b>@skillobj.Family</li>
-                <li class="list-group-item"><b>Crated By: </b>@skillobj.CreatedBy</li>
+                <li class="list-group-item active" aria-current="true">Details of skill with Id(@skill.Id)</li>
+                <li class="list-group-item"><b>Id: </b>@skill.Id</li>
+                <li class="list-group-item"><b>Skill Name: </b>@skill.Name</li>
+                <li class="list-group-item"><b>Skill Family: </b>@skill.Family</li>
+                <li class="list-group-item"><b>Crated By: </b>@skill.CreatedBy</li>
             </ul>
         </div>
     </div>

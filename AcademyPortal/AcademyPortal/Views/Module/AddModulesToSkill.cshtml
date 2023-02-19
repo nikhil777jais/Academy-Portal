@@ -1,0 +1,65 @@
+﻿@model AcademyPortal.ViewModel.SkillModuleMappingViewModel;
+@{
+    ViewData["Title"] = "Add-Modules";
+    var skill = ViewData["skill"] as Skill;
+}
+<div class="container-fluid">
+    <div class="row justify-content-center ">
+        <div class="col-md-4">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Update Skill
+            </div>
+            <div class="mx-5">
+                <form method="post" novalidate>
+                    <div class="form-group pb-1">
+                        <label asp-for="ModuleNames"></label>
+                        <select asp-for="ModuleNames" class="form-control" asp-items="ViewBag.listModules" multiple>
+                        </select>
+                        <small><span asp-validation-for="ModuleNames" class="text-danger"></span></small>
+                    </div>
+                    <div class="form-group ">
+                        <input type="submit" value="Update" class="btn btn-success mt-2" />
+                        <a class="btn btn-danger mt-2" asp-route="skillModuleMapping">GoBack</a>
+                    </div>
+                </form>
+            </div>
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-@TempData["Type"] alert-dismissible fade show py-3 mb-0 mt-3" role="alert">
+                    @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+        <div class="col-md-7">
+            <div class="alert alert-danger text-center text-dark mt-3 py-2" role="alert">
+                Skill Details
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item active" aria-current="true">Details of skill with Id(@skill.Id)</li>
+                <li class="list-group-item"><b>Id: </b>@skill.Id</li>
+                <li class="list-group-item"><b>Skill Name: </b>@skill.Name</li>
+                <li class="list-group-item"><b>Skill Family: </b>@skill.Family</li>
+                <li class="list-group-item"><b>Crated By: </b>@skill.CreatedBy</li>
+                <li class="list-group-item">
+                    <b>Modules: </b>
+                    @if (skill.RelatedModules.Any())
+                    {
+                        <ol>
+                            @foreach (var mod in skill.RelatedModules)
+                            {
+                                <li>@mod.Name | @mod.Technology | @mod.Proficiency
+                                    <a class="btn btn-danger mx-3 py-0 my-1" href="/@skill.Id/removeModuleFromSkill/@mod.Id">Remove</a>
+                                </li>
+                            }
+                        </ol>
+                    }
+                    else
+                    {
+                        <p>Module Not Found</p>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
-﻿@using AcademyPortal.Model
-@using AcademyPortal.ViewModel
+﻿@using AcademyPortal.Models;
+@using AcademyPortal.ViewModel;
 @model UpdateRoleViewModel;
 
 @{
@@ -15,10 +15,10 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-10">
-                    <form method="post" action = "~/user/updatestatus/@user.Id" novalidate>
+                    <form method="post" action = "~/user/updateStatus/@user.Id" novalidate>
                         <div class="form-group pb-1">
                             <label asp-for="Status"></label>
-                            <select asp-for="Status" class="form-control" asp-items="new SelectList(ViewBag.lststatus)">
+                            <select asp-for="Status" class="form-control" asp-items="new SelectList(ViewBag.listStatus)">
                             </select>
                             <small><span asp-validation-for="Status" class="text-danger"></span></small>
                             <input type="hidden" asp-for="Role" value="kjbd"/>
@@ -34,7 +34,7 @@
                     <form method="post" novalidate>
                         <div class="form-group pb-1">
                             <label asp-for="Role"></label>
-                            <select asp-for="Role" class="form-control" asp-items="new SelectList(ViewBag.lstroles)">
+                            <select asp-for="Role" class="form-control" asp-items="new SelectList(ViewBag.listRoles)">
                                 <option value="">Please Select any Role</option>
                             </select>
                             <small><span asp-validation-for="Role" class="text-danger"></span></small>

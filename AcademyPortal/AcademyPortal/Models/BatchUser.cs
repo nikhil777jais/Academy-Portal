@@ -1,6 +1,4 @@
-﻿using AcademyPortal.Model;
-
-namespace AcademyPortal.Models
+﻿namespace AcademyPortal.Models
 {
     public class BatchUser
     {
@@ -13,3 +11,5 @@ namespace AcademyPortal.Models
        public Status? status { get; set; } 
     }
 }
+// To avoid redundancy of batch data, Created this bridge table
+// this table table only holds specific data

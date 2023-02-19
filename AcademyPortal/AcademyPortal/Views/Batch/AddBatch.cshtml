@@ -13,14 +13,14 @@
                 <form method="post" novalidate>
                     <div class="form-group pb-1">
                         <label asp-for="RelaedSkill"></label>
-                        <select asp-for="RelaedSkill" class="form-control" asp-items="ViewBag.lstskill">
+                        <select asp-for="RelaedSkill" class="form-control" asp-items="ViewBag.listSkill">
                             <option value="">Please Select Skill</option>
                         </select>
                         <small><span asp-validation-for="RelaedSkill" class="text-danger"></span></small>
                     </div>
                     <div class="form-group pb-1">
                         <label asp-for="RelaedModule"></label>
-                        <select asp-for="RelaedModule" class="form-control" asp-items="ViewBag.lstmodule">
+                        <select asp-for="RelaedModule" class="form-control" asp-items="ViewBag.listModule">
                             <option value="">Please Select Module</option>
                         </select>
                         <small><span asp-validation-for="RelaedModule" class="text-danger"></span></small>
