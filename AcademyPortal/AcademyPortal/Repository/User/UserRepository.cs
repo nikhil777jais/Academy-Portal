@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
+using AcademyPortal.DTOs;
 using AcademyPortal.Models;
-using AcademyPortal.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,22 +19,22 @@ namespace AcademyPortal.Repository.User
             _db = db;
         }
 
-        public async Task<IdentityResult> CreateUserAsync(SignUpUserViewModel signUpUserViewModel)
+        public async Task<IdentityResult> CreateUserAsync(SignUpUserDto signUpUserDto)
         {
             var user = new ApplicationUser()
             {
-                Email = signUpUserViewModel.Email,
-                UserName = signUpUserViewModel.Email,
+                Email = signUpUserDto.Email,
+                UserName = signUpUserDto.Email,
                 status = await _db.AllStatus.FindAsync(1)
             };
 
-            var result = await _userManager.CreateAsync(user, signUpUserViewModel.Password);
+            var result = await _userManager.CreateAsync(user, signUpUserDto.Password);
             return result;
         }
 
-        public async Task<SignInResult> SignInUserAsync(SignInViewModel signInViewModel)
+        public async Task<SignInResult> SignInUserAsync(SignInDto signInDto)
         {
-            var result = await _singInManager.PasswordSignInAsync(signInViewModel.Email, signInViewModel.Password, false, false);
+            var result = await _singInManager.PasswordSignInAsync(signInDto.Email, signInDto.Password, false, false);
             return result;
         }
 
@@ -43,14 +43,14 @@ namespace AcademyPortal.Repository.User
             await _singInManager.SignOutAsync();
         }
     
-        public async Task<IdentityResult> UpdateProfileAsync(ProfileViewModel profileViewModel, ApplicationUser applicationUser)
+        public async Task<IdentityResult> UpdateProfileAsync(ProfileDto profileDto, ApplicationUser applicationUser)
         {
-            applicationUser.FirstName = profileViewModel.FirstName;
-            applicationUser.LastName = profileViewModel.LastName;
-            applicationUser.PhoneNumber = profileViewModel.PhoneNumber;
-            applicationUser.DateOfBirth = profileViewModel.DateOfBirth;
-            applicationUser.DateOfBirth = profileViewModel.DateOfBirth;
-            applicationUser.Gender = profileViewModel.Gender;
+            applicationUser.FirstName = profileDto.FirstName;
+            applicationUser.LastName = profileDto.LastName;
+            applicationUser.PhoneNumber = profileDto.PhoneNumber;
+            applicationUser.DateOfBirth = profileDto.DateOfBirth;
+            applicationUser.DateOfBirth = profileDto.DateOfBirth;
+            applicationUser.Gender = profileDto.Gender;
 
             var result = await _userManager.UpdateAsync(applicationUser);
 

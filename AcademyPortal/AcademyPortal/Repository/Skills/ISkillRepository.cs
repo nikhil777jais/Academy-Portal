@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AcademyPortal.DTOs;
 using AcademyPortal.Models;
-using AcademyPortal.ViewModel;
 
 namespace AcademyPortal.Repository.Skills
 {
@@ -12,7 +12,7 @@ namespace AcademyPortal.Repository.Skills
         Task<IEnumerable<Skill>> GetSkillsWithUserAsync();
         Task<IEnumerable<Skill>> GetSkillsAsync();
         Task<Skill> GetSkillByIdAsync(int id);
-        Task AddSkillAsync(ApplicationUser user, SkillViewModel skillViewModel); 
+        Task AddSkillAsync(ApplicationUser user, SkillDto skillDto); 
         void UpdateSkill(Skill skill);
         void RemoveSkill(Skill skill);
         Task<IEnumerable<Skill>> GetSkillsWithModuleAsync();

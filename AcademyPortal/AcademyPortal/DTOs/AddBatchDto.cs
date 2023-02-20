@@ -1,9 +1,8 @@
-﻿using AcademyPortal.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AcademyPortal.ViewModel
+namespace AcademyPortal.DTOs
 {
-    public class AddBatchViewModel
+    public class AddBatchDto
     {
         [Display(Name = "Skill")]
         [Required(ErrorMessage = "Please Select Any Skill")]

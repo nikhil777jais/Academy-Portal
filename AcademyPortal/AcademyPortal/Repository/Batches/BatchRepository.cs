@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AcademyPortal.Models;
-using AcademyPortal.ViewModel;
 using Microsoft.AspNetCore.Identity;
+using AcademyPortal.DTOs;
 
 namespace AcademyPortal.Repository.Batches
 {
@@ -20,17 +20,17 @@ namespace AcademyPortal.Repository.Batches
             _userManager = userManager;
         }
 
-        public async Task AddBatchAsync(ApplicationUser user, AddBatchViewModel addBatchViewModel)
+        public async Task AddBatchAsync(ApplicationUser user, AddBatchDto addBatchDto)
         {
             var batch = new Batch()
             {
-                RelaedSkill = await _db.Skills.FindAsync(Convert.ToInt32(addBatchViewModel.RelaedSkill)),
-                RelaedModule = await _db.Modules.FindAsync(Convert.ToInt32(addBatchViewModel.RelaedModule)),
-                Technology = addBatchViewModel.Technology,
-                Batch_Start_Date = addBatchViewModel.Batch_Start_Date,
-                Batch_End_Date = addBatchViewModel.Batch_End_Date,
-                Batch_Capacity = addBatchViewModel.Batch_Capacity,
-                Classroom_Name = addBatchViewModel.Classroom_Name,
+                RelaedSkill = await _db.Skills.FindAsync(Convert.ToInt32(addBatchDto.RelaedSkill)),
+                RelaedModule = await _db.Modules.FindAsync(Convert.ToInt32(addBatchDto.RelaedModule)),
+                Technology = addBatchDto.Technology,
+                Batch_Start_Date = addBatchDto.Batch_Start_Date,
+                Batch_End_Date = addBatchDto.Batch_End_Date,
+                Batch_Capacity = addBatchDto.Batch_Capacity,
+                Classroom_Name = addBatchDto.Classroom_Name,
                 CreatedBy = user
             };
             await _db.Batches.AddAsync(batch);

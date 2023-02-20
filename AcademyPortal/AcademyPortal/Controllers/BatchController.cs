@@ -1,11 +1,11 @@
 ﻿using AcademyPortal.Models;
 using AcademyPortal.Repository.UnitOfWork;
-using AcademyPortal.ViewModel;
 using AcademyPortal.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using AcademyPortal.DTOs;
 
 namespace AcademyPortal.Controllers
 {
@@ -34,12 +34,12 @@ namespace AcademyPortal.Controllers
         [Authorize(Roles = "Admin")]
         [Route("batch", Name = "addBatch")]
         [HttpPost]
-        public async Task<IActionResult> AddBatch(AddBatchViewModel addBatchViewModel)
+        public async Task<IActionResult> AddBatch(AddBatchDto addBatchDto)
         {
             var user = await _uow.UserRepository.GetUserByClaimsAsync(User);
             if (ModelState.IsValid)
             {
-                await _uow.BatchRepository.AddBatchAsync(user, addBatchViewModel);
+                await _uow.BatchRepository.AddBatchAsync(user, addBatchDto);
                 if(await _uow.SaveChangesAsync()){
                     TempData["Message"] = $" Batch Added to Database Successfully!";
                     TempData["Type"] = "success";
@@ -77,7 +77,7 @@ namespace AcademyPortal.Controllers
             ViewBag.listSkill = listSkill;
 
             //get batch by Id
-            var batchvm = new AddBatchViewModel()
+            var batchvm = new AddBatchDto()
             {
                 Technology = batch.Technology,
                 Batch_Start_Date = batch.Batch_Start_Date,
@@ -92,7 +92,7 @@ namespace AcademyPortal.Controllers
         [Authorize(Roles = "Admin")]
         [Route("batch/{id}", Name = "updateBatch")]
         [HttpPost]
-        public async Task<IActionResult> UpdateBatch(int id, AddBatchViewModel addBatchViewModel)
+        public async Task<IActionResult> UpdateBatch(int id, AddBatchDto addBatchDto)
         {
             Console.WriteLine("*********************************************");
             Console.WriteLine(id);
@@ -102,13 +102,13 @@ namespace AcademyPortal.Controllers
                 Console.WriteLine("valid");
                 var batch = await _uow.BatchRepository.GetBatchByIdAsync(id);
                 // var batch = _db.Batches.Include(b => b.CreatedBy).Include(b => b.RelaedSkill).Include(b => b.RelaedModule).FirstOrDefault(x => x.Id == id);
-                batch.RelaedSkill = await _uow.SkillRepository.GetSkillByIdAsync(Convert.ToInt32(addBatchViewModel.RelaedSkill));
-                batch.RelaedModule = await _uow.ModuleRepository.GetModuleByIdAsync(Convert.ToInt32(addBatchViewModel.RelaedModule));
-                batch.Technology = addBatchViewModel.Technology;
-                batch.Batch_Start_Date = addBatchViewModel.Batch_Start_Date;
-                batch.Batch_End_Date = addBatchViewModel.Batch_End_Date;
-                batch.Batch_Capacity = addBatchViewModel.Batch_Capacity;
-                batch.Classroom_Name = addBatchViewModel.Classroom_Name;
+                batch.RelaedSkill = await _uow.SkillRepository.GetSkillByIdAsync(Convert.ToInt32(addBatchDto.RelaedSkill));
+                batch.RelaedModule = await _uow.ModuleRepository.GetModuleByIdAsync(Convert.ToInt32(addBatchDto.RelaedModule));
+                batch.Technology = addBatchDto.Technology;
+                batch.Batch_Start_Date = addBatchDto.Batch_Start_Date;
+                batch.Batch_End_Date = addBatchDto.Batch_End_Date;
+                batch.Batch_Capacity = addBatchDto.Batch_Capacity;
+                batch.Classroom_Name = addBatchDto.Classroom_Name;
                 _uow.BatchRepository.UpdateBatch(batch);
                 if(await _uow.SaveChangesAsync()){
                     TempData["Message"] = $" Batch Updated Successfully!";
@@ -141,13 +141,13 @@ namespace AcademyPortal.Controllers
         [Authorize(Roles = "Admin")]
         [Route("addFaculty/{id}", Name = "addFaculty")]
         [HttpPost]
-        public async Task<IActionResult> AddFaculty(int id, AddFacultyViewModel addFacultyViewModel)
+        public async Task<IActionResult> AddFaculty(int id, AddFacultyDto addFacultyDto)
         {
             if (ModelState.IsValid)
             {
                 var batch = await _uow.BatchRepository.GetBatchByIdWithUsersAsync(id);
                 var listBatchUser = new List<BatchUser>();
-                foreach (var Id in addFacultyViewModel.Faculties)
+                foreach (var Id in addFacultyDto.Faculties)
                 {
                     if (!batch.Users.Select(bu => bu.UserId).Contains(Id))
                     {
@@ -221,7 +221,7 @@ namespace AcademyPortal.Controllers
         [Authorize(Roles = "Faculty")]
         [Route("update-batch-status/{id}", Name = "updateBatchStatus")]
         [HttpPost]
-        public async Task<IActionResult> UpdateBatchStatus(int id, UpdateBatchStatusViewModel  updateBatchStatusViewModel)
+        public async Task<IActionResult> UpdateBatchStatus(int id, UpdateBatchStatusDto  updateBatchStatusDto)
         {
             var batch = await _uow.BatchRepository.GetDetailedBatchByIdAsync(id);
             var user = await _uow.UserRepository.GetUserByClaimsAsync(User);
@@ -230,7 +230,7 @@ namespace AcademyPortal.Controllers
                 if (batch != null)
                 {
                     var batchUser = batch.Users.Where(bu => bu.BatchId == id && bu.UserId == user.Id).SingleOrDefault();
-                    batchUser.status = await _uow.StatusRepository.GetStatusByIdAsync(Convert.ToInt32(updateBatchStatusViewModel.Status));
+                    batchUser.status = await _uow.StatusRepository.GetStatusByIdAsync(Convert.ToInt32(updateBatchStatusDto.Status));
                     if(await _uow.SaveChangesAsync()){
                         TempData["Message"] = $"Batch status updated Successfully!";
                         TempData["Type"] = "success";

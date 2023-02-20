@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AcademyPortal.DTOs;
 using AcademyPortal.Models;
-using AcademyPortal.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcademyPortal.Repository.Modules
@@ -17,13 +17,13 @@ namespace AcademyPortal.Repository.Modules
             _db = db;
         }
 
-        public async Task AddModuleAsync(ApplicationUser user, ModuleViewModel moduleViewModel)
+        public async Task AddModuleAsync(ApplicationUser user, ModuleDto moduleDto)
         {
             var module = new Module()
             {
-                Name = moduleViewModel.Name,
-                Technology = moduleViewModel.Technology,
-                Proficiency= moduleViewModel.Proficiency,
+                Name = moduleDto.Name,
+                Technology = moduleDto.Technology,
+                Proficiency= moduleDto.Proficiency,
                 CreatedBy = user
             };
             await _db.Modules.AddAsync(module);
