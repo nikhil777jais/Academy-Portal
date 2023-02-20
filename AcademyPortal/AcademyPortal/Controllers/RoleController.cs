@@ -1,7 +1,6 @@
-﻿using AcademyPortal.Repository.UnitOfWork;
-using AcademyPortal.ViewModel;
+﻿using AcademyPortal.DTOs;
+using AcademyPortal.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AcademyPortal.Controllers
@@ -26,15 +25,15 @@ namespace AcademyPortal.Controllers
 
         [Route("role/add", Name = "AddAndListRole")]
         [HttpPost]
-        public async Task<IActionResult> AddAndListRole(RoleViewModel roleViewModel)
+        public async Task<IActionResult> AddAndListRole(RoleDto roleDto)
         {
             if (ModelState.IsValid)
             {
                 //check if any role from same name is present in DB or not
-                var role = await _uow.RoleRepository.GetRoleByNameAsync(roleViewModel.Name);
+                var role = await _uow.RoleRepository.GetRoleByNameAsync(roleDto.Name);
                 if ( role == null)
                 {
-                    var result = await _uow.RoleRepository.AddRoleAsync(roleViewModel.Name);
+                    var result = await _uow.RoleRepository.AddRoleAsync(roleDto.Name);
                     if (result.Succeeded)
                     {
                         TempData["Message"] = "Role added Successfully !!";
@@ -42,7 +41,7 @@ namespace AcademyPortal.Controllers
                         return RedirectToRoute("AddAndListRole");
                     }
                 }
-                TempData["Message"] = $"{roleViewModel.Name} Is already in the database";
+                TempData["Message"] = $"{roleDto.Name} Is already in the database";
                 TempData["Type"] = "danger";
             }
             return RedirectToRoute("AddAndListRole");

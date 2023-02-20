@@ -1,7 +1,3 @@
-using AcademyPortal.Models;
-using AcademyPortal.Repository;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using AcademyPortal.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 

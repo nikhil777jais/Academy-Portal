@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace AcademyPortal.ViewModel
+namespace AcademyPortal.DTOs
 {
-    public class SkillModuleMappingViewModel
+    public class SkillModuleMappingDto
     {
         [Required(ErrorMessage = "Please Select Any Module")]
         public List<string> ModuleNames { get; set; }

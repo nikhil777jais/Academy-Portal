@@ -1,8 +1,7 @@
-﻿using AcademyPortal.Models;
+﻿using AcademyPortal.DTOs;
+using AcademyPortal.Models;
 using AcademyPortal.Repository.UnitOfWork;
-using AcademyPortal.ViewModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -28,12 +27,12 @@ namespace AcademyPortal.Controllers
 
         [Route("module", Name = "addModule")]
         [HttpPost]
-        public async Task<IActionResult> AddAndListModule(ModuleViewModel moduleViewModel)
+        public async Task<IActionResult> AddAndListModule(ModuleDto moduleDto)
         {
             var user = await _uow.UserRepository.GetUserByClaimsAsync(User);
             if (ModelState.IsValid)
             {
-                await _uow.ModuleRepository.AddModuleAsync(user, moduleViewModel);
+                await _uow.ModuleRepository.AddModuleAsync(user, moduleDto);
                 if(await _uow.SaveChangesAsync()){
                     TempData["Message"] = $"Module Created Successfully !!";
                     TempData["Type"] = "success";
@@ -49,7 +48,7 @@ namespace AcademyPortal.Controllers
         public async Task<IActionResult> UpdateModule(int id)
         {
             var module = await _uow.ModuleRepository.GetModuleByIdAsync(id);
-            var moduleModel = new ModuleViewModel()
+            var moduleModel = new ModuleDto()
             {
                 Name = module.Name,
                 Technology = module.Technology,
@@ -61,14 +60,14 @@ namespace AcademyPortal.Controllers
 
         [Route("module/update/{id}", Name = "updateModule")]
         [HttpPost]
-        public async Task<IActionResult> UpdateModule(int id, ModuleViewModel moduleViewModel)
+        public async Task<IActionResult> UpdateModule(int id, ModuleDto moduleDto)
         {
             var module = await _uow.ModuleRepository.GetModuleByIdAsync(id);
             if (ModelState.IsValid && module != null)
             {                
-                module.Name = moduleViewModel.Name;
-                module.Technology = moduleViewModel.Technology;
-                module.Proficiency= moduleViewModel.Proficiency;
+                module.Name = moduleDto.Name;
+                module.Technology = moduleDto.Technology;
+                module.Proficiency= moduleDto.Proficiency;
                 _uow.ModuleRepository.UpdateModule(module);
                 if(await _uow.SaveChangesAsync()){
                     TempData["Message"] = $"Module \"{module.Name}\" Updated Successfully !!";
@@ -130,14 +129,14 @@ namespace AcademyPortal.Controllers
 
         [Route("addModulesToSkill/{id}", Name = "addModulesToSkill")]
         [HttpPost]
-        public async Task<IActionResult> AddModulesToSkill(int id, SkillModuleMappingViewModel skillModuleMappingViewModel)
+        public async Task<IActionResult> AddModulesToSkill(int id, SkillModuleMappingDto skillModuleMappingDto)
         {
             var skill = await _uow.SkillRepository.GetSkillByIdWithModuleAsync(id);
             if (ModelState.IsValid && skill != null)
             {
                 var listModules = new List<Module>();
                 
-                foreach(var Id in skillModuleMappingViewModel.ModuleNames)  
+                foreach(var Id in skillModuleMappingDto.ModuleNames)  
                 {
                     listModules.Add(await _uow.ModuleRepository.GetModuleByIdAsync(Convert.ToInt32(Id)));
                 }

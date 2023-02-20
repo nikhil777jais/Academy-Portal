@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AcademyPortal.DTOs;
 using AcademyPortal.Models;
-using AcademyPortal.ViewModel;
 
 namespace AcademyPortal.Repository.Modules
 {
@@ -11,7 +11,7 @@ namespace AcademyPortal.Repository.Modules
     {
         Task<IEnumerable<Module>> GetModulesAsync();
         Task<IEnumerable<Module>> GetModulesWithUserAsync();
-        Task AddModuleAsync(ApplicationUser user, ModuleViewModel moduleViewModel);
+        Task AddModuleAsync(ApplicationUser user, ModuleDto moduleDto);
         Task<Module> GetModuleByIdAsync(int id);
         void UpdateModule(Module module);
         void RemoveModule(Module module);

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AcademyPortal.ViewModel
+namespace AcademyPortal.DTOs
 {
-    public class ModuleViewModel
+    public class ModuleDto
     {
         [Required(ErrorMessage = "Please Enter Name of Module")]
         [StringLength(20, MinimumLength = 3)]

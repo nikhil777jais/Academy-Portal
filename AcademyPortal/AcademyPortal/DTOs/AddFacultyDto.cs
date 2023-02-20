@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AcademyPortal.ViewModel
+namespace AcademyPortal.DTOs
 {
-    public class AddFacultyViewModel
+    public class AddFacultyDto
     {
         [Required(ErrorMessage = "Please Select Faculty")]
         public List<string> Faculties { get; set; }

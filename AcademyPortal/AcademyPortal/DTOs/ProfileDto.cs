@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AcademyPortal.ViewModel
+namespace AcademyPortal.DTOs
 {
-    public class ProfileViewModel
+    public class ProfileDto
     {
         [Required]
         [StringLength(20, MinimumLength = 3)]

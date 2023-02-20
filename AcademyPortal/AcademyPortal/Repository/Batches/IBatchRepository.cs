@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AcademyPortal.DTOs;
 using AcademyPortal.Models;
-using AcademyPortal.ViewModel;
 
 namespace AcademyPortal.Repository.Batches
 {
@@ -14,7 +14,7 @@ namespace AcademyPortal.Repository.Batches
         Task<Batch> GetBatchByIdAsync(int id);
         Task<Batch> GetBatchByIdWithUsersAsync(int id);
         Task<Batch> GetDetailedBatchByIdAsync(int id);
-        Task AddBatchAsync(ApplicationUser user, AddBatchViewModel addBatchViewModel);
+        Task AddBatchAsync(ApplicationUser user, AddBatchDto addBatchDto);
         void UpdateBatch(Batch batch);
         void RemoveFacultyFromBatch(Batch batch, BatchUser batchUser);
     }

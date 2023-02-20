@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AcademyPortal.DTOs;
 using AcademyPortal.Models;
-using AcademyPortal.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcademyPortal.Repository.Skills
@@ -16,12 +16,12 @@ namespace AcademyPortal.Repository.Skills
         {
             _db = db;
         }
-        public async Task AddSkillAsync(ApplicationUser user, SkillViewModel skillViewModel)
+        public async Task AddSkillAsync(ApplicationUser user, SkillDto skillDto)
         {
             var skill = new Skill()
             {
-                Name = skillViewModel.Name,
-                Family = skillViewModel.Family,
+                Name = skillDto.Name,
+                Family = skillDto.Family,
                 CreatedBy = user
             };
             await _db.Skills.AddAsync(skill);

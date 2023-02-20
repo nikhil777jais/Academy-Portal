@@ -1,14 +1,14 @@
 ﻿using AcademyPortal.Models;
 using AcademyPortal.Repository.UnitOfWork;
-using AcademyPortal.ViewModel;
 using AcademyPortal.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AcademyPortal.DTOs;
 
 namespace AcademyPortal.Controllers
-{ 
+{
     [Authorize(Roles = "Admin")]
     public class SkillController : Controller
     {
@@ -28,12 +28,12 @@ namespace AcademyPortal.Controllers
         }
         [Route("skill", Name = "addSkill")]
         [HttpPost]
-        public async Task<IActionResult> AddAndListSkill(SkillViewModel skillViewModel)
+        public async Task<IActionResult> AddAndListSkill(SkillDto skillDto)
         {
             var user = await _uow.UserRepository.GetUserByClaimsAsync(User);
             if (ModelState.IsValid)
             {
-                await _uow.SkillRepository.AddSkillAsync(user, skillViewModel);
+                await _uow.SkillRepository.AddSkillAsync(user, skillDto);
                 if(await _uow.SaveChangesAsync()){
                     TempData["Message"] = $"Skill Created Successfully !!";
                     TempData["Type"] = "success";
@@ -52,7 +52,7 @@ namespace AcademyPortal.Controllers
         public async Task<IActionResult> UpdateSkill(int id)
         {
             var skill = await _uow.SkillRepository.GetSkillByIdAsync(id);
-            var skillVm = new SkillViewModel()
+            var skillVm = new SkillDto()
             {
                 Name = skill.Name,
                 Family = skill.Family
@@ -63,14 +63,14 @@ namespace AcademyPortal.Controllers
 
         [Route("skill/update/{id}", Name = "updateSkill")]
         [HttpPost]
-        public async Task<IActionResult> UpdateSkill(int id, SkillViewModel skillViewModel)
+        public async Task<IActionResult> UpdateSkill(int id, SkillDto skillDto)
         {
             var skill = await _uow.SkillRepository.GetSkillByIdAsync(id);
             if (ModelState.IsValid)
             {
                 {
-                    skill.Name = skillViewModel.Name;
-                    skill.Family = skillViewModel.Family;
+                    skill.Name = skillDto.Name;
+                    skill.Family = skillDto.Family;
                     _uow.SkillRepository.UpdateSkill(skill);
                     if(await _uow.SaveChangesAsync()){
                         TempData["Message"] = $"Skill \"{skill.Name}\" Updated Successfully !!";
