@@ -4,6 +4,10 @@ namespace AcademyPortal.DTOs
 {
     public class ProfileDto
     {
+        public string? Id { get; set; }
+        public string? Email { get; set; }
+        public string? UserName { get; set; }
+
         [Required]
         [StringLength(20, MinimumLength = 3)]
         [Display(Name = "First Name")]
@@ -28,5 +32,10 @@ namespace AcademyPortal.DTOs
         [StringLength(20)]
         [Display(Name = "Gender")]
         public string? Gender { get; set; }
+
+        public string? Status { get; set; }
+
+        public string? Role { get; set; }
+
     }
 }

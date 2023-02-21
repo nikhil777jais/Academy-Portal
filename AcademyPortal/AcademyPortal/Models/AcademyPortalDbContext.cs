@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AcademyPortal.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcademyPortal.Models
 {
-    public class AcademyPortalDbContext:IdentityDbContext<ApplicationUser>
+    public class AcademyPortalDbContext:IdentityDbContext<ApplicationUser, ApplicationRole, string,
+        IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>,
+        IdentityRoleClaim<string>, IdentityUserToken<string>>
     {
         public AcademyPortalDbContext(DbContextOptions<AcademyPortalDbContext> options) : base(options)
         {
@@ -32,6 +35,22 @@ namespace AcademyPortal.Models
                 .HasOne(bu => bu.User)
                 .WithMany(bu => bu.Batches)
                 .HasForeignKey(bu => bu.UserId);
+
+            modelBuilder.Entity<ApplicationUser>(u =>
+            {
+                u.HasMany(e => e.UserRoles)
+                .WithOne(e => e.ApplicationUser)
+                .HasForeignKey(ur => ur.UserId)
+                .IsRequired();
+            });
+
+            modelBuilder.Entity<ApplicationRole>(r =>
+            {
+                r.HasMany(e => e.UserRoles)
+                .WithOne(e => e.ApplicationRole)
+                .HasForeignKey(ur => ur.RoleId)
+                .IsRequired();
+            });    
         }
         
         public DbSet<Status> AllStatus { get; set; } 

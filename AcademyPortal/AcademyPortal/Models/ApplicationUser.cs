@@ -38,6 +38,8 @@ namespace AcademyPortal.Models
         public ICollection<Batch>? CreatedBatches { get; set; }        
 
         public ICollection<BatchUser>? Batches { get; set; }
-        
+
+        public virtual ICollection<UserRole> UserRoles { get; set; }
+
     }
 }

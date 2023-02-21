@@ -1,8 +1,11 @@
 ﻿using System.Security.Claims;
 using AcademyPortal.DTOs;
 using AcademyPortal.Models;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+#nullable disable
 
 namespace AcademyPortal.Repository.User
 {
@@ -11,12 +14,14 @@ namespace AcademyPortal.Repository.User
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _singInManager;
         private readonly AcademyPortalDbContext _db;
+        private readonly IMapper _mapper;
 
-        public UserRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> singInManager, AcademyPortalDbContext db)
+        public UserRepository(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> singInManager, AcademyPortalDbContext db, IMapper mapper)
         {
             _userManager = userManager;
             _singInManager = singInManager;
             _db = db;
+            _mapper = mapper;
         }
 
         public async Task<IdentityResult> CreateUserAsync(SignUpUserDto signUpUserDto)
@@ -59,7 +64,8 @@ namespace AcademyPortal.Repository.User
 
         public async Task<ApplicationUser> GetUserByIdAsync(string id)
         {
-            return await _db.Users.Include(u => u.status).FirstOrDefaultAsync(u => u.Id == id);
+            return await _db.Users.Include(u => u.status).Include(x => x.UserRoles)
+                                .ThenInclude(x => x.ApplicationRole).FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<ApplicationUser> GetUserByUsernameAsync(string username)
@@ -95,6 +101,20 @@ namespace AcademyPortal.Repository.User
         public async Task<IEnumerable<ApplicationUser>> GetUsersInRoleAsync(string  role)
         {
             return await _userManager.GetUsersInRoleAsync(role);
+        }
+
+        public async Task<ProfileDto> GetProfileById(string id)
+        {
+            var query = _db.Users.Include(u => u.status).Include(x => x.UserRoles).ThenInclude(x => x.ApplicationRole).Where(u => u.Id == id).AsQueryable();
+
+            var profile = await query.ProjectTo<ProfileDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+            return profile;
+        }
+
+        public async Task<IEnumerable<ProfileDto>> GetProfiles()
+        {
+            var query = _db.Users.Include(u => u.status).Include(x => x.UserRoles).ThenInclude(x => x.ApplicationRole).AsQueryable();
+            return await query.ProjectTo<ProfileDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
     }
 }

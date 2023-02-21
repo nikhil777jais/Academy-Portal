@@ -10,6 +10,8 @@ using AcademyPortal.Repository.Modules;
 using AcademyPortal.Repository.Roles;
 using AcademyPortal.Repository.Skills;
 using AcademyPortal.Repository.User;
+using AutoMapper;
+using BingoAPI.Services.Token;
 using Microsoft.AspNetCore.Identity;
 
 namespace AcademyPortal.Repository.UnitOfWork
@@ -19,23 +21,29 @@ namespace AcademyPortal.Repository.UnitOfWork
         //single instance of these properties is available application 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _singInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
         private readonly AcademyPortalDbContext _context;
 
         public UnitOfWork(
             UserManager<ApplicationUser> userManager, 
             SignInManager<ApplicationUser> singInManager, 
-            RoleManager<IdentityRole> roleManager, 
+            RoleManager<ApplicationRole> roleManager,
+            IConfiguration configuration,
+            IMapper mapper,
             AcademyPortalDbContext context)
         {
             _userManager = userManager;
             _singInManager = singInManager;
             _context = context;
             _roleManager = roleManager;
+            _configuration = configuration;
+            _mapper = mapper;
         }
 
         //this instances are available where where uwo is injected 
-        public IUserRepository UserRepository => new UserRepository(_userManager, _singInManager, _context);
+        public IUserRepository UserRepository => new UserRepository(_userManager, _singInManager, _context, _mapper);
 
         public IRoleRepository RoleRepository => new RoleRepository(_roleManager);
 
@@ -48,6 +56,8 @@ namespace AcademyPortal.Repository.UnitOfWork
         public IBatchRepository BatchRepository =>  new BatchRepository(_context, _userManager);
 
         public IBatchUserRepository BatchUserRepository => new BatchUserRepository(_context);
+
+        public ITokenService TokenService => new TokenService(_configuration, _userManager);
 
         public async Task<bool> SaveChangesAsync()
         {

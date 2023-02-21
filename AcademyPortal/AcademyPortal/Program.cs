@@ -1,4 +1,6 @@
 using AcademyPortal.Extensions;
+using AcademyPortal.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -19,6 +21,7 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseStaticFiles();
 
 app.UseRouting();

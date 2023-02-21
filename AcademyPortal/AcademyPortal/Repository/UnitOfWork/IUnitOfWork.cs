@@ -9,6 +9,7 @@ using AcademyPortal.Repository.Skills;
 using AcademyPortal.Repository.Modules;
 using AcademyPortal.Repository.Batches;
 using AcademyPortal.Repository.BatchUsers;
+using BingoAPI.Services.Token;
 
 namespace AcademyPortal.Repository.UnitOfWork
 {
@@ -21,6 +22,7 @@ namespace AcademyPortal.Repository.UnitOfWork
         public IModuleRepository ModuleRepository {get;} 
         public IBatchRepository BatchRepository {get;} 
         public IBatchUserRepository BatchUserRepository {get;} 
+        public ITokenService TokenService {get;} 
         Task<bool> SaveChangesAsync();
     }
 }

@@ -19,5 +19,9 @@ namespace AcademyPortal.Repository.User
         Task<ApplicationUser> GetUserByClaimsAsync(ClaimsPrincipal claims);
         Task<IEnumerable<ApplicationUser>> GetUsersAsync();
         Task<IEnumerable<ApplicationUser>> GetUsersInRoleAsync(string role);
+
+        //API Specific methods
+        Task<ProfileDto> GetProfileById(string id);
+        Task<IEnumerable<ProfileDto>> GetProfiles();
     }
 }
