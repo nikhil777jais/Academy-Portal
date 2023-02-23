@@ -28,6 +28,8 @@ namespace AcademyPortal.DTOs
         [Display(Name = "Date Of Birth")]
         public DateTime? DateOfBirth { get; set; }
 
+        public DateTime? DateJoined { get; set; }
+
         [Required]
         [StringLength(20)]
         [Display(Name = "Gender")]

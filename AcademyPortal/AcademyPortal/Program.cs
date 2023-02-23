@@ -10,6 +10,9 @@ builder.Services.AddControllersWithViews();
 // Application Services
 builder.Services.AddApplicationService(builder.Configuration);
 builder.Services.IdentityConfig(builder.Configuration);
+
+builder.Services.AddCors();
+
 builder.Services.ConfigureApplicationCookie(options =>{
     options.LoginPath = "/user/signIn";
     options.AccessDeniedPath = new PathString("/User/AccessDenied");
@@ -25,6 +28,8 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 
 app.UseAuthentication();
 

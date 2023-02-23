@@ -31,7 +31,10 @@ namespace AcademyPortal.Controllers
                 UserName = user.UserName,
                 Email = user.Email,
                 Gender = user.Gender,
-                Token = await _uow.TokenService.CreateToken(user)
+                Token = await _uow.TokenService.CreateToken(user),
+                Role = user.UserRoles.FirstOrDefault().ApplicationRole.Name,
+                Status = user.status.Name,
+                ExpiresIn = "3600"
             };
             return Ok(userDto);
         }
@@ -54,8 +57,11 @@ namespace AcademyPortal.Controllers
                 UserName = user.UserName,
                 Email = user.Email,
                 Gender = user.Gender,
-                Token = await _uow.TokenService.CreateToken(user)
-            };
+                Token = await _uow.TokenService.CreateToken(user),
+                Role = user.UserRoles.FirstOrDefault().ApplicationRole.Name,
+                Status = user.status.Name,
+                ExpiresIn="3600"
+        };
             return Ok(userDto);
         }
 
@@ -65,8 +71,21 @@ namespace AcademyPortal.Controllers
         {
             var profile = await _uow.UserRepository.GetProfileById(User.GetUserId());
             if (profile == null) return NotFound();
-            
+
             return Ok(profile);
+        }
+
+        [Authorize]
+        [HttpPatch("profile")]
+        public async Task<ActionResult> Profile(ProfileDto profileDto)
+        {
+            var user = await _uow.UserRepository.GetUserByIdAsync(User.GetUserId());
+            if (user == null) return NotFound();
+
+            var result = await _uow.UserRepository.UpdateProfileAsync(profileDto, user);
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            return Ok(new { message = $"Profile updated successfully" });
         }
 
         [Authorize(Roles = "Admin")]
@@ -103,7 +122,7 @@ namespace AcademyPortal.Controllers
             result = await _uow.UserRepository.AddUserToRoleAsync(user, updateRole1Dto.Role);
             if (!result.Succeeded) return BadRequest(new { errors = $"unable to add in role" });
 
-            return Ok($"Added in role {updateRole1Dto.Role} success");
+            return Ok(new { message = $"Added in role {updateRole1Dto.Role} success" });
         }
 
         [Authorize(Roles = "Admin")]
@@ -119,13 +138,8 @@ namespace AcademyPortal.Controllers
             {
                 return BadRequest(new { error = $"unable to update Status"});
             }
-            return Ok($"User status updated to {updateStatusDto.Status} success");
+            return Ok(new { message = $"User status updated to {updateStatusDto.Status} success" });
         }
-
-
-
-
-
 
     }
 }

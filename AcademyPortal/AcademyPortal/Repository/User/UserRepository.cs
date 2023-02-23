@@ -70,7 +70,7 @@ namespace AcademyPortal.Repository.User
 
         public async Task<ApplicationUser> GetUserByUsernameAsync(string username)
         {
-            return await _db.Users.Include(u => u.status).SingleOrDefaultAsync(u => u.UserName == username);
+            return await _db.Users.Include(u => u.status).Include(x => x.UserRoles).ThenInclude(x => x.ApplicationRole).SingleOrDefaultAsync(u => u.UserName == username);
         }
 
         public async Task<ApplicationUser> GetUserByClaimsAsync(ClaimsPrincipal claims)
