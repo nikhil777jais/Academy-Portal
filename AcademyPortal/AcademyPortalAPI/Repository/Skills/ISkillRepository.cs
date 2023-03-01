@@ -11,11 +11,15 @@ namespace AcademyPortalAPI.Repository.Skills
     {
         Task<IEnumerable<Skill>> GetSkillsWithUserAsync();
         Task<IEnumerable<Skill>> GetSkillsAsync();
-        Task<Skill> GetSkillByIdAsync(int id);
+        Task<IEnumerable<SkillDto>> GetSkillDtosWithUserAsync();
+        Task<Skill> GetSkillByIdWithUserAsync(int id);
+        Task<SkillDto> GetSkillDtoByIdWithUserAsync(int id);
         Task AddSkillAsync(ApplicationUser user, SkillDto skillDto); 
         void UpdateSkill(Skill skill);
         void RemoveSkill(Skill skill);
         Task<IEnumerable<Skill>> GetSkillsWithModuleAsync();
         Task<Skill> GetSkillByIdWithModuleAsync(int id);
+        Task<bool> HasModules(int id);
+        Task<bool> HasBatches(int id);
     }
 }

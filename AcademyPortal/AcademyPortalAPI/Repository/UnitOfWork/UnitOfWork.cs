@@ -49,7 +49,7 @@ namespace AcademyPortalAPI.Repository.UnitOfWork
 
         public IStatusRepository StatusRepository => new StatusRepository(_context, _mapper);
 
-        public ISkillRepository SkillRepository => new SkillRepository(_context);
+        public ISkillRepository SkillRepository => new SkillRepository(_context, _mapper);
 
         public IModuleRepository ModuleRepository => new ModuleRepository(_context);
 

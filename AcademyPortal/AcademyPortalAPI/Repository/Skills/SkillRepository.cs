@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AcademyPortalAPI.DTOs;
 using AcademyPortalAPI.Models;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AcademyPortalAPI.Repository.Skills
@@ -11,10 +13,12 @@ namespace AcademyPortalAPI.Repository.Skills
     public class SkillRepository : ISkillRepository
     {
         private readonly AcademyPortalDbContext _db;
+        private readonly IMapper _mapper;
 
-        public SkillRepository(AcademyPortalDbContext db)
+        public SkillRepository(AcademyPortalDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
         public async Task AddSkillAsync(ApplicationUser user, SkillDto skillDto)
         {
@@ -27,7 +31,7 @@ namespace AcademyPortalAPI.Repository.Skills
             await _db.Skills.AddAsync(skill);
         }
 
-        public async Task<Skill> GetSkillByIdAsync(int id)
+        public async Task<Skill> GetSkillByIdWithUserAsync(int id)
         {
             var skill = await _db.Skills.Include(s => s.CreatedBy).FirstOrDefaultAsync(s => s.Id == id);
             return skill;                 
@@ -61,6 +65,28 @@ namespace AcademyPortalAPI.Repository.Skills
         {
             var skill =  await _db.Skills.Include(s => s.CreatedBy).Include(s => s.RelatedModules).SingleOrDefaultAsync(s => s.Id == id);  
             return skill;                            
+        }
+
+        public async Task<IEnumerable<SkillDto>> GetSkillDtosWithUserAsync()
+        {
+            var query = _db.Skills.Include(s => s.CreatedBy).AsQueryable();
+            return await query.ProjectTo<SkillDto>(_mapper.ConfigurationProvider).ToListAsync();
+        }
+
+        public async Task<SkillDto> GetSkillDtoByIdWithUserAsync(int id)
+        {
+            var query = _db.Skills.Include(s => s.CreatedBy).Where(s => s.Id == id).AsQueryable();
+            return await query.ProjectTo<SkillDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> HasModules(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> HasBatches(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

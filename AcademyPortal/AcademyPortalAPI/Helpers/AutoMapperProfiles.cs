@@ -8,12 +8,6 @@ namespace AcademyPortalAPI.Helpers
 {
     public class AutoMapperProfiles : Profile
     {
-        private readonly IUnitOfWork _uow;
-
-        public AutoMapperProfiles(IUnitOfWork uow)
-        {
-            _uow = uow;
-        }
         public AutoMapperProfiles()
         {
             CreateMap<ApplicationUser, ProfileDto>()
@@ -23,6 +17,9 @@ namespace AcademyPortalAPI.Helpers
             CreateMap<ApplicationRole, RoleDto>();
 
             CreateMap<Status, StatusDto>();
+
+            CreateMap<Skill, SkillDto>()
+                .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedBy.Email));
         }
     }
 }
