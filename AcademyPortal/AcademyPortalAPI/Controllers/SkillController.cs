@@ -62,12 +62,18 @@ namespace AcademyPortalAPI.Controllers
             if (!await _uow.SaveChangesAsync()) return BadRequest(new { error = $"Unable to update skill" });
             return Ok(new { message = $"skill with id -> {id} updated" });
         }
-        
+
         [HttpDelete("deleteSkill/{id}")]
         public async Task<IActionResult> DeleteSkill(int id)
         {
 
             var skill = await _uow.SkillRepository.GetSkillByIdWithUserAsync(id);
+
+            var hasMod = await _uow.SkillRepository.HasModules(id);
+            if (hasMod) return BadRequest(new { error = $"can not delete due to Referential Integrity" });
+
+            var hasBatches = await _uow.SkillRepository.HasBatches(id);
+            if (hasBatches) return BadRequest(new { error = $"can not delete due to Referential Integrity"});
 
             if (skill == null) return NotFound(new { error = $"skill not found with id {id}" });
 

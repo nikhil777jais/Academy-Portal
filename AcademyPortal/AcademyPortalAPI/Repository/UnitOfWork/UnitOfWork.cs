@@ -51,7 +51,7 @@ namespace AcademyPortalAPI.Repository.UnitOfWork
 
         public ISkillRepository SkillRepository => new SkillRepository(_context, _mapper);
 
-        public IModuleRepository ModuleRepository => new ModuleRepository(_context);
+        public IModuleRepository ModuleRepository => new ModuleRepository(_context, _mapper);
 
         public IBatchRepository BatchRepository =>  new BatchRepository(_context, _userManager);
 

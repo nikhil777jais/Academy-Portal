@@ -81,12 +81,16 @@ namespace AcademyPortalAPI.Repository.Skills
 
         public async Task<bool> HasModules(int id)
         {
-            throw new NotImplementedException();
+            var modules = _db.Modules.Include(m => m.RelatedSkills).AsQueryable();
+            var isPresent = await modules.AnyAsync(m => m.RelatedSkills.Any(s => s.Id == id));
+            return isPresent;
         }
 
-        public Task<bool> HasBatches(int id)
+        public async Task<bool> HasBatches(int id)
         {
-            throw new NotImplementedException();
+            var batches = _db.Batches.Include(b => b.RelaedSkill).AsQueryable();
+            var isPresent = await batches.AnyAsync(b => b.RelaedSkill.Id == id);
+            return isPresent;
         }
     }
 }

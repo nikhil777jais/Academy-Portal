@@ -20,6 +20,9 @@ namespace AcademyPortalAPI.Helpers
 
             CreateMap<Skill, SkillDto>()
                 .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedBy.Email));
+
+            CreateMap<Module, ModuleDto>()
+                .ForMember(dest => dest.CreatedBy, opt => opt.MapFrom(src => src.CreatedBy.Email));
         }
     }
 }
