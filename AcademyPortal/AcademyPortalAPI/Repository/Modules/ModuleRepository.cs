@@ -43,9 +43,9 @@ namespace AcademyPortalAPI.Repository.Modules
             _db.Modules.Remove(module);
         }
 
-        public async Task<Module> GetModuleByIdWithUserAsync(int id)
+        public async Task<Module> GetModuleByIdAsync(int id)
         {
-            var module = await _db.Modules.Include(m => m.CreatedBy).SingleOrDefaultAsync(m => m.Id == id);
+            var module = await _db.Modules.SingleOrDefaultAsync(m => m.Id == id);
             return module;
         }
 
@@ -58,13 +58,7 @@ namespace AcademyPortalAPI.Repository.Modules
         {
             return await _db.Modules.ToListAsync();
         }
-
-        public async Task<Module> GetModulesByIdWithSkillsAsync(int id)
-        {
-            var module = await _db.Modules.Include(m => m.CreatedBy).Include(m => m.RelatedSkills).SingleOrDefaultAsync(m => m.Id == id);
-            return module;                                    
-        }
-
+   
         public async Task<IEnumerable<Module>> GetModulesWithSkillsAsync()
         {
             return await _db.Modules.Include(m => m.CreatedBy).Include(m => m.RelatedSkills).ToListAsync();

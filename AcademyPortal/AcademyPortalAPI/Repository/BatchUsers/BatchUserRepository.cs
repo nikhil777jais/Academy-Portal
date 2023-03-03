@@ -4,16 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using AcademyPortalAPI.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 namespace AcademyPortalAPI.Repository.BatchUsers
 {
     public class BatchUserRepository : IBatchUserRepository
     {
         private readonly AcademyPortalDbContext _db;
+        private readonly IMapper _mapper;
 
-        public BatchUserRepository(AcademyPortalDbContext db)
+        public BatchUserRepository(AcademyPortalDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Batch>> GetBatchesAssignedToUserByUserId(string userId)

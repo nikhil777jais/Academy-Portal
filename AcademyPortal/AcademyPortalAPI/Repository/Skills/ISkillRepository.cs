@@ -19,7 +19,13 @@ namespace AcademyPortalAPI.Repository.Skills
         void RemoveSkill(Skill skill);
         Task<IEnumerable<Skill>> GetSkillsWithModuleAsync();
         Task<Skill> GetSkillByIdWithModuleAsync(int id);
+        Task<Skill> GetSkillByIdAsync(int id);
         Task<bool> HasModules(int id);
+        Task<bool> HasModulesWithId(int id, int moduleId);
         Task<bool> HasBatches(int id);
+
+        Task<IEnumerable<ModuleSkillDto>> GetModuleSkillDtosAsync();
+        Task<ModuleSkillDto> GetModuleSkillDtoByIdAsync(int id);
+
     }
 }

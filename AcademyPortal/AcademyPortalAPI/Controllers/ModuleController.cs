@@ -50,7 +50,7 @@ namespace AcademyPortalAPI.Controllers
         public async Task<IActionResult> UpdateModule(ModuleDto moduleDto, int id)
         {
 
-            var module = await _uow.ModuleRepository.GetModuleByIdWithUserAsync(id);
+            var module = await _uow.ModuleRepository.GetModuleByIdAsync(id);
 
             if (module == null) return BadRequest(new { error = $"module not found with id {id}" });
 
@@ -68,7 +68,7 @@ namespace AcademyPortalAPI.Controllers
         public async Task<IActionResult> DeleteModule(int id)
         {
 
-            var module = await _uow.ModuleRepository.GetModuleByIdWithUserAsync(id);
+            var module = await _uow.ModuleRepository.GetModuleByIdAsync(id);
 
             var hasBatches = await _uow.ModuleRepository.HasBatches(id);
             if (hasBatches) return BadRequest(new { error = $"can not delete due to Referential Integrity" });

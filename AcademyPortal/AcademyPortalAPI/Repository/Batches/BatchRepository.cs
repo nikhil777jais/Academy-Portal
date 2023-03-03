@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using AcademyPortalAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using AcademyPortalAPI.DTOs;
+using AutoMapper;
 
 namespace AcademyPortalAPI.Repository.Batches
 {
@@ -13,11 +14,13 @@ namespace AcademyPortalAPI.Repository.Batches
     {
         private readonly AcademyPortalDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMapper _mapper;
 
-        public BatchRepository(AcademyPortalDbContext db, UserManager<ApplicationUser> userManager)
+        public BatchRepository(AcademyPortalDbContext db, UserManager<ApplicationUser> userManager, IMapper mapper)
         {
             _db = db;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
         public async Task AddBatchAsync(ApplicationUser user, AddBatchDto addBatchDto)

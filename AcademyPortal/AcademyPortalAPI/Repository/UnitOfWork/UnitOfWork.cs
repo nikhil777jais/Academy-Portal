@@ -53,9 +53,9 @@ namespace AcademyPortalAPI.Repository.UnitOfWork
 
         public IModuleRepository ModuleRepository => new ModuleRepository(_context, _mapper);
 
-        public IBatchRepository BatchRepository =>  new BatchRepository(_context, _userManager);
+        public IBatchRepository BatchRepository =>  new BatchRepository(_context, _userManager, _mapper);
 
-        public IBatchUserRepository BatchUserRepository => new BatchUserRepository(_context);
+        public IBatchUserRepository BatchUserRepository => new BatchUserRepository(_context, _mapper);
 
         public ITokenService TokenService => new TokenService(_configuration, _userManager);
 

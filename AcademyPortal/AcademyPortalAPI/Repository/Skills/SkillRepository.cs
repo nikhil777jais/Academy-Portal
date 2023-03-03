@@ -61,9 +61,14 @@ namespace AcademyPortalAPI.Repository.Skills
             return await _db.Skills.Include(s => s.CreatedBy).Include(s => s.RelatedModules).ToListAsync();
         }
 
+        public async Task<Skill> GetSkillByIdAsync(int id)
+        {
+            var skill =  await _db.Skills.SingleOrDefaultAsync(s => s.Id == id);  
+            return skill;                            
+        }
         public async Task<Skill> GetSkillByIdWithModuleAsync(int id)
         {
-            var skill =  await _db.Skills.Include(s => s.CreatedBy).Include(s => s.RelatedModules).SingleOrDefaultAsync(s => s.Id == id);  
+            var skill =  await _db.Skills.Include(s => s.RelatedModules).SingleOrDefaultAsync(s => s.Id == id);  
             return skill;                            
         }
 
@@ -86,11 +91,33 @@ namespace AcademyPortalAPI.Repository.Skills
             return isPresent;
         }
 
+        public async Task<bool> HasModulesWithId(int id, int moduleId)
+        {
+            var skill = _db.Skills.Include(m => m.RelatedModules).Where(s => s.Id == id).AsQueryable();
+            var isPresent = await skill.AnyAsync(s => s.RelatedModules.Any(m => m.Id == moduleId));
+            return isPresent;
+        }
+
         public async Task<bool> HasBatches(int id)
         {
             var batches = _db.Batches.Include(b => b.RelaedSkill).AsQueryable();
             var isPresent = await batches.AnyAsync(b => b.RelaedSkill.Id == id);
             return isPresent;
         }
+
+        public async Task<IEnumerable<ModuleSkillDto>> GetModuleSkillDtosAsync()
+        {
+            var query = _db.Skills.Include(s => s.RelatedModules).ThenInclude(m => m.CreatedBy).AsQueryable();
+            var data = await query.ProjectTo<ModuleSkillDto>(_mapper.ConfigurationProvider).ToListAsync();
+            return data;
+        }
+
+        public async Task<ModuleSkillDto> GetModuleSkillDtoByIdAsync(int id)
+        {
+            var query = _db.Skills.Include(s => s.RelatedModules).ThenInclude(m => m.CreatedBy).AsQueryable();
+            var data = await query.ProjectTo<ModuleSkillDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Id == id);
+            return data;
+        }
+
     }
 }
