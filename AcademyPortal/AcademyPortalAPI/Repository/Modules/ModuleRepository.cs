@@ -78,9 +78,15 @@ namespace AcademyPortalAPI.Repository.Modules
 
         public async Task<bool> HasBatches(int id)
         {
-            var batches = _db.Batches.Include(b => b.RelaedModule).AsQueryable();
-            var isPresent = await batches.AnyAsync(b => b.RelaedModule.Id == id);
+            var batches = _db.Batches.Include(b => b.RelatedModule).AsQueryable();
+            var isPresent = await batches.AnyAsync(b => b.RelatedModule.Id == id);
             return isPresent;
+        }
+
+        public async Task<IEnumerable<ModuleNameDto>> GetModuleNameDtosWithUserAsync()
+        {
+            var query = _db.Modules.AsQueryable();
+            return await query.ProjectTo<ModuleNameDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
     }
 }

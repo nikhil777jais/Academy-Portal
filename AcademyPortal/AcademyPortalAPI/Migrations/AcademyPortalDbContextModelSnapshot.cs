@@ -439,13 +439,13 @@ namespace AcademyPortalAPI.Migrations
 
             modelBuilder.Entity("AcademyPortalAPI.Models.Batch", b =>
                 {
-                    b.HasOne("AcademyPortalAPI.Models.Module", "RelaedModule")
+                    b.HasOne("AcademyPortalAPI.Models.Module", "RelatedModule")
                         .WithMany("RelatedBatches")
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AcademyPortalAPI.Models.Skill", "RelaedSkill")
+                    b.HasOne("AcademyPortalAPI.Models.Skill", "RelatedSkill")
                         .WithMany("RelatedBatches")
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -459,9 +459,9 @@ namespace AcademyPortalAPI.Migrations
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("RelaedModule");
+                    b.Navigation("RelatedModule");
 
-                    b.Navigation("RelaedSkill");
+                    b.Navigation("RelatedSkill");
                 });
 
             modelBuilder.Entity("AcademyPortalAPI.Models.BatchUser", b =>

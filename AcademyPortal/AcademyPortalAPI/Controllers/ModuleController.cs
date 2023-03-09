@@ -24,6 +24,15 @@ namespace AcademyPortalAPI.Controllers
             if (modules == null) return NotFound(new { errors = $"modules not found" });
             return Ok(modules);
         }
+        
+        [HttpGet("getModuleNames")]
+        public async Task<IActionResult> GetModuleNames()
+        {
+            var modules = await _uow.ModuleRepository.GetModuleNameDtosWithUserAsync();
+
+            if (modules == null) return NotFound(new { errors = $"modules not found" });
+            return Ok(modules);
+        }
             
         [HttpGet("getModule/{id}")]
         public async Task<IActionResult> GetModuleById(int id)

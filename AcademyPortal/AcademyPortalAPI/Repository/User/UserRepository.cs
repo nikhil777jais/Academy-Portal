@@ -116,5 +116,18 @@ namespace AcademyPortalAPI.Repository.User
             var query = _db.Users.Include(u => u.status).Include(x => x.UserRoles).ThenInclude(x => x.ApplicationRole).AsQueryable();
             return await query.ProjectTo<ProfileDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
+
+        public async Task<IEnumerable<FacultyDto>> GetFaculties()
+        {
+
+            var query = _db.Users.Include(u => u.status).Include(x => x.UserRoles).ThenInclude(x => x.ApplicationRole).Where(u => u.UserRoles.FirstOrDefault().ApplicationRole.Name == "Faculty").AsQueryable();
+
+            return await query.ProjectTo<FacultyDto>(_mapper.ConfigurationProvider).ToListAsync();
+        }
+
+        public async Task<ApplicationUser> GetUserByUserIdAsync(string id)
+        {
+            return await _db.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }

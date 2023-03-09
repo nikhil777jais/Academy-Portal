@@ -99,6 +99,15 @@ namespace AcademyPortalAPI.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet("getFaculties")]
+        public async Task<ActionResult<IList<FacultyDto>>> GetFaculties()
+        {
+            var faculties = await _uow.UserRepository.GetFaculties();
+            if (faculties == null) return NotFound();
+            return Ok(faculties);
+        }
+            
+        [Authorize(Roles = "Admin")]
         [HttpGet("getUser/{id}")]
         public async Task<ActionResult<ProfileDto>> GetUserById(string id)
         {

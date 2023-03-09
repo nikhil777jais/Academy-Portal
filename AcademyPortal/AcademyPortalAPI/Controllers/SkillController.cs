@@ -26,6 +26,15 @@ namespace AcademyPortalAPI.Controllers
             return Ok(skills);
         }
 
+        [HttpGet("getSkillNames")]
+        public async Task<IActionResult> GetSkillNames()
+        {
+            var skills = await _uow.SkillRepository.GetSkillNameDtosWithUserAsync();
+
+            if(skills == null) return NotFound(new { errors = $"skills not found" });
+            return Ok(skills);
+        }
+
         [HttpGet("getSkill/{id}")]
         public async Task<IActionResult> GetSkillById(int id)
         {

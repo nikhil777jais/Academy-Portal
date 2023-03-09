@@ -8,9 +8,9 @@ namespace AcademyPortalAPI.Models
     {
         public int Id { get; set; }
 
-        public Skill RelaedSkill { get; set; }
+        public Skill RelatedSkill { get; set; }
 
-        public Module RelaedModule { get; set; }
+        public Module RelatedModule { get; set; }
 
         [StringLength(20, MinimumLength = 3)]
         public string? Technology { get; set; } 

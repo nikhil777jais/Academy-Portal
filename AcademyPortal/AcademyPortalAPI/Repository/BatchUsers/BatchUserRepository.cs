@@ -27,7 +27,7 @@ namespace AcademyPortalAPI.Repository.BatchUsers
 
         public async Task<BatchUser> GetBatchUserById(int batchId, string userId)
         {
-            return await _db.BatchUser.FirstOrDefaultAsync(bu => bu.UserId == userId && bu.BatchId == batchId);
+            return await _db.BatchUser.Include(bu => bu.status).FirstOrDefaultAsync(bu => bu.UserId == userId && bu.BatchId == batchId);
         }
 
         public void RemoveBatchUser(BatchUser batchUser)

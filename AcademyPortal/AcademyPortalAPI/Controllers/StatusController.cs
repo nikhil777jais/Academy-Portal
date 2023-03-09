@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AcademyPortalAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Faculty")]
     public class StatusController : BaseAPIController
     {
         private readonly IUnitOfWork _uow;

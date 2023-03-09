@@ -15,6 +15,7 @@ namespace AcademyPortalAPI.Repository.User
         Task<IdentityResult> RemoveUserFromRolesAsync(ApplicationUser user, IEnumerable<string> roles);
         Task<IEnumerable<string>> GetUsersRolesAsync(ApplicationUser user);
         Task<ApplicationUser> GetUserByIdAsync(string id);
+        Task<ApplicationUser> GetUserByUserIdAsync(string id);
         Task<ApplicationUser> GetUserByUsernameAsync(string username);
         Task<ApplicationUser> GetUserByClaimsAsync(ClaimsPrincipal claims);
         Task<IEnumerable<ApplicationUser>> GetUsersAsync();
@@ -23,5 +24,6 @@ namespace AcademyPortalAPI.Repository.User
         //API Specific methods
         Task<ProfileDto> GetProfileById(string id);
         Task<IEnumerable<ProfileDto>> GetProfiles();
+        Task<IEnumerable<FacultyDto>> GetFaculties();
     }
 }

@@ -12,6 +12,7 @@ namespace AcademyPortalAPI.Repository.Skills
         Task<IEnumerable<Skill>> GetSkillsWithUserAsync();
         Task<IEnumerable<Skill>> GetSkillsAsync();
         Task<IEnumerable<SkillDto>> GetSkillDtosWithUserAsync();
+        Task<IEnumerable<SkillNameDto>> GetSkillNameDtosWithUserAsync();
         Task<Skill> GetSkillByIdWithUserAsync(int id);
         Task<SkillDto> GetSkillDtoByIdWithUserAsync(int id);
         Task AddSkillAsync(ApplicationUser user, SkillDto skillDto); 

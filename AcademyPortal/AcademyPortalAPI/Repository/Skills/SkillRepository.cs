@@ -100,8 +100,8 @@ namespace AcademyPortalAPI.Repository.Skills
 
         public async Task<bool> HasBatches(int id)
         {
-            var batches = _db.Batches.Include(b => b.RelaedSkill).AsQueryable();
-            var isPresent = await batches.AnyAsync(b => b.RelaedSkill.Id == id);
+            var batches = _db.Batches.Include(b => b.RelatedSkill).AsQueryable();
+            var isPresent = await batches.AnyAsync(b => b.RelatedSkill.Id == id);
             return isPresent;
         }
 
@@ -119,5 +119,10 @@ namespace AcademyPortalAPI.Repository.Skills
             return data;
         }
 
+        public async Task<IEnumerable<SkillNameDto>> GetSkillNameDtosWithUserAsync()
+        {
+            var query = _db.Skills.AsQueryable();
+            return await query.ProjectTo<SkillNameDto>(_mapper.ConfigurationProvider).ToListAsync();
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace AcademyPortalAPI.Repository.Modules
         Task<IEnumerable<Module>> GetModulesAsync();
         Task<IEnumerable<Module>> GetModulesWithUserAsync();
         Task<IEnumerable<ModuleDto>> GetModuleDtosWithUserAsync();
+        Task<IEnumerable<ModuleNameDto>> GetModuleNameDtosWithUserAsync();
         Task AddModuleAsync(ApplicationUser user, ModuleDto moduleDto);
         Task<Module> GetModuleByIdAsync(int id);
         Task<ModuleDto> GetModuleDtoByIdWithUserAsync(int id);

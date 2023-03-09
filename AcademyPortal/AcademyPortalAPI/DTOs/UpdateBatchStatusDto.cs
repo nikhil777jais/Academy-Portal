@@ -5,6 +5,6 @@ namespace AcademyPortalAPI.DTOs
     public class UpdateBatchStatusDto
     {
         [Required(ErrorMessage = "Please Select Any Status")]
-        public string? Status { get; set; }
+        public int StatusId { get; set; }
     }
 }

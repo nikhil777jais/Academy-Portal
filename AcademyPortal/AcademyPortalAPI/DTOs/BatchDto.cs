@@ -2,15 +2,17 @@
 
 namespace AcademyPortalAPI.DTOs
 {
-    public class AddBatchDto
+    public class BatchDto
     {
+        public int? Id { get; set; }
+
         [Display(Name = "Skill")]
         [Required(ErrorMessage = "Please Select Any Skill")]
-        public string RelaedSkill { get; set; }
+        public int RelatedSkillId { get; set; }
 
         [Required(ErrorMessage = "Please Select Any Module")]
         [Display(Name = "Module")]
-        public string RelaedModule { get; set; }
+        public int RelatedModuleId { get; set; }
 
         [StringLength(20, MinimumLength = 3)]
         public string? Technology { get; set; }
@@ -33,5 +35,7 @@ namespace AcademyPortalAPI.DTOs
         [Display(Name = "Classroom Name ")]
         [StringLength(20, MinimumLength = 3)]
         public string? Classroom_Name { get; set; }
+
+        public string? CreatedBy { get; set; }
     }
 }
