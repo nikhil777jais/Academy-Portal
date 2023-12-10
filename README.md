@@ -1,10 +1,5 @@
 # Academy Portal
 
-[![GitHub license](https://img.shields.io/github/license/your-username/academy-portal.svg)](https://github.com/nikhil777jais/Academy-Portal/blob/main/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/your-username/academy-portal.svg)](https://github.com/nikhil777jais/Academy-Portal/issues)
-[![GitHub stars](https://img.shields.io/github/stars/your-username/academy-portal.svg)](https://github.com/nikhil777jais/Academy-Portal/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/your-username/academy-portal.svg)](https://github.com/nikhil777jais/Academy-Portal/network)
-
 Welcome to the Academy Portal project! This web application is built on ASP.NET Core MVC, providing a robust platform for managing an academy or educational institution. It includes user authentication using Identity Framework Core, Entity Framework Core for data access, and AutoMapper for entity mapping.
 
 ## Features
