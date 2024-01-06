@@ -12,6 +12,8 @@ Welcome to the Academy Portal project! This web application is built on ASP.NET 
 
 - **Repository Design Patterns:** The project follows the repository design pattern, promoting a clean and modular architecture for data access and manipulation.
 
+- **Dependency Injection:** Used ASP.NET Core provided  built-in, lightweight dependency injection containers that help in managing and injecting dependencies into application components. This loose coupling, modular and testable code.
+
 - **Razor Pages UI:** The user interface is designed using Razor Pages, providing a dynamic and responsive experience for users.
 
 ## Technologies Used
